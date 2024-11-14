@@ -63,6 +63,113 @@ body {
   letter-spacing: 0.03rem;
 }
 
+
+/* bagian Awal *//* Container styling */
+.custom-card {
+  background-color: #f5f5f5;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+  margin: auto;
+  margin-bottom: 50px;
+}
+
+/* Hover animation */
+.custom-card:hover {
+  transform: scale(1.02);
+}
+
+.image-placeholder {
+  position: relative;
+  width: 100%; /* Full width */
+  height: 400px; /* Fixed height for landscape */
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.landscape-image {
+  object-fit: cover; /* Ensure the image covers the div */
+  width: 100%; /* Make the image take full width */
+  height: 100%; /* Make the image take full height */
+}
+
+/* Button styling */
+.btn-custom {
+  background-color: #007bff;
+  color: white;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-custom:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+
+/* end */
+
+
+
+/* Gambar FIX */
+
+.img-fixed {
+  width: 400px; /* Atur lebar tetap */
+  height: 500px; /* Atur tinggi tetap */
+  object-fit: cover; /* Mengatur gambar agar terpotong jika tidak sesuai proporsi */
+}
+
+
+/* END gambar Fix */
+
+
+
+/* INI style khusus tambahan */
+
+/* Animation for navbar links */
+.animated-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.animated-link:hover {
+  color: #525252; /* Adjust to preferred hover color */
+}
+.animated-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #525252;
+  transition: transform 0.3s ease;
+  transform: scaleX(0);
+  transform-origin: center;
+}
+.animated-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: center;
+}
+
+/* Animation for navbar icons */
+.animated-icon {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.animated-icon:hover {
+  color: #525252; /* Adjust to preferred hover color */
+  transform: scale(1.2);
+}
+
+/* Batas  */
+
 h1,
 .h1,
 h2,
