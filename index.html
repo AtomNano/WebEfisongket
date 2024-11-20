@@ -29,27 +29,29 @@
 <body class="homepage">
   <!-- Preloader Section -->
   <div class="preloader text-white fs-6 text-uppercase overflow-hidden"></div>
-
-  <!-- Search Popup -->
-  <div class="search-popup">
-    <div class="search-popup-container">
-      <form role="search" method="get" class="form-group" action="">
+<!-- Search Popup -->
+<div class="search-popup">
+  <div class="search-popup-container">
+    <form role="search" method="get" class="form-group" action="">
+      <div class="position-relative">
         <input type="search" id="search-form" class="form-control border-0 border-bottom" placeholder="Cari produk songket..." value="" name="s" />
-        <button type="submit" class="search-submit border-0 position-absolute bg-white" style="top: 15px; right: 15px;"><i class="bi bi-search"></i></button>
-        <h5 class="cat-list-title">Kategori Songket</h5>
-        <ul class="cat-list">
-          <li class="cat-list-item"><a href="#" title="Baju Songket">Baju Songket</a></li>
-          <li class="cat-list-item"><a href="#" title="Kain Songket">Kain Songket</a></li>
-          <li class="cat-list-item"><a href="#" title="Aksesori Songket">Aksesori Songket</a></li>
-          <li class="cat-list-item"><a href="#" title="Sepatu Songket">Sepatu Songket</a></li>
-        </ul>
-      </form>
-    </div>
+        <button type="submit" class="search-submit border-0 position-absolute bg-white" style="top: 0; right: 0; height: 100%; padding: 0 15px;">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+      <h5 class="cat-list-title">Kategori Songket</h5>
+      <ul class="cat-list">
+        <li class="cat-list-item"><a href="#" title="Baju Songket">Baju Songket</a></li>
+        <li class="cat-list-item"><a href="#" title="Kain Songket">Kain Songket</a></li>
+        <li class="cat-list-item"><a href="#" title="Aksesori Songket">Aksesori Songket</a></li>
+        <li class="cat-list-item"><a href="#" title="Sepatu Songket">Sepatu Songket</a></li>
+      </ul>
+    </form>
   </div>
-
+</div>
   <!-- Offcanvas Cart Section -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
-    <div class="offcanvas-header justify-content-center">
+    <div class="offcanvas-header justify-content-between">
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
@@ -126,22 +128,18 @@
         </ul>
 
         <!-- Right Side Icons -->
-        <div class="d-flex align-items-center">
-          <a href="#" class="text-uppercase me-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-            <i class="bi bi-cart m-2 h5 animated-icon"></i>
-          </a>
-          <a href="#search" class="me-3">
-            <i class="bi bi-search m-2 h5 animated-icon"></i>
-          </a>
-          <a href="#">
-            <i class="bi bi-person-circle m-2 h5 animated-icon"></i>
-          </a>
-        </div>
       </div>
+    </div>
+    <div class="d-flex align-items-center">
+      <a href="#" class="text-uppercase me-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+        <i class="bi bi-cart m-2 h5 animated-icon"></i>
+      </a>
+      <a href="#">
+        <i class="bi bi-person-circle m-2 h5 animated-icon"></i>
+      </a>
     </div>
   </div>
 </nav>
-
 
 
   <section id="billboard" class="bg-light py-5">
@@ -149,7 +147,7 @@
       <!-- end -->
       
       <div class="row justify-content-center">
-        <h1 class="section-title text-center mt-4" data-aos="fade-up">Koleksi Terbaru</h1>
+        <h1 class="section-title text-center mt-1" data-aos="fade-up">Koleksi Terbaru</h1>
         <div class="col-md-6 text-center" data-aos="fade-up" data-aos-delay="300">
           <p>Temukan koleksi baju tradisional songket yang elegan dan berkualitas tinggi. Setiap produk dirancang dengan penuh perhatian untuk memberikan kenyamanan dan gaya.</p>
         </div>
@@ -165,10 +163,7 @@
             <p class="text">Kain songket asli dengan motif tradisional dan kualitas benang terbaik. Cocok untuk acara formal atau koleksi pribadi.</p>
             <button class="btn btn-custom">Lihat Detail</button>
             <!-- Dots -->
-            <div class="dots mt-3">
-                <div class="dot active"></div>
-                <div class="dot"></div>
-            </div>
+        
         </div>
         <!-- Image Section -->
         <div class="image-placeholder flex-grow-1 image-zoom-effect" data-aos="fade-up">
@@ -239,7 +234,7 @@
               <div class="banner-item image-zoom-effect">
                 <div class="image-holder">
                   <a href="#">
-                    <img src="images/banner-image-3.jpg" alt="product" class="img-fluid">
+                    <img src="gambarEfi/BORDIR/Selendang Bordir Hitam (600.000).jpg" alt="product" class="img-fluid">
                   </a>
                 </div>
                 <div class="banner-content py-4">
@@ -255,8 +250,7 @@
           </div>
           <div class="swiper-pagination"></div>
         </div>
-        <div class="icon-arrow icon-arrow-left"><i class="bi bi-arrow-left"></i>
-          </svg></div>
+        <div class="icon-arrow icon-arrow-left"><i class="bi bi-arrow-left"></i></div>
         <div class="icon-arrow icon-arrow-right">
           <i class="bi bi-arrow-right"></i>
         </div>
@@ -315,7 +309,7 @@
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
                 <a href="index.html">
-                  <img src="images/cat-item1.jpg" alt="categories" class="product-image img-fluid">
+                  <img src="gambarEfi/BORDIR/Selendang Kecil Bordiran Biru L40 Bahan Organza (350.000).jpg" alt="categories" class="product-image img-fixed">
                 </a>
               </div>
               <div class="category-content">
@@ -329,7 +323,7 @@
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
                 <a href="index.html">
-                  <img src="images/cat-item2.jpg" alt="categories" class="product-image img-fluid">
+                  <img src="gambarEfi/BORDIR/Selendang kecil bordiran hijau botol L40 bahan masmara (350.000).jpg" alt="categories" class="product-image img-fixed">
                 </a>
               </div>
               <div class="category-content">
@@ -343,7 +337,7 @@
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
                 <a href="index.html">
-                  <img src="images/cat-item3.jpg" alt="categories" class ="product-image img-fluid">
+                  <img src="gambarEfi/BORDIR/Selendang kecil bordiran putih l40 bahan masmara (350.000).jpg" alt="categories" class ="product-image img-fixed">
                 </a>
               </div>
               <div class="category-content">
@@ -370,7 +364,7 @@
             <div class="product-item image-zoom-effect link-effect">
               <div class="image-holder position-relative">
                 <a href="index.html">
-                  <img src="images/product-item-1.jpg" alt="categories" class="product-image img-fluid">
+                  <img src="gambarEfi/BORDIR/Selendang Kecil Bordiran Biru L40 Bahan Organza (350.000).jpg" alt="categories" class="product-image img-fixed2">
                 </a>
                 <a href="index.html" class="btn-icon btn-wishlist">
                   <svg width="24" height="24" viewBox="0 0 24 24">
@@ -379,7 +373,7 @@
                 </a>
                 <div class="product-content">
                   <h5 class="element-title text-uppercase fs-5 mt-3">
-                    <a href="index.html">Baju Songket Modern</a>
+                    <a href="index.html">Baju Songket Mo  dern</a>
                   </h5>
                   <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$95.00</span></a>
                 </div>
@@ -390,7 +384,7 @@
             <div class="product-item image-zoom-effect link-effect">
               <div class="image-holder position-relative">
                 <a href="index.html">
-                  <img src="images/product-item-2.jpg" alt="categories" class="product-image img-fluid">
+                  <img src="gambarEfi/Songket Balapak Satu Motif Kombinasi Suji Cair (3.200.000).jpg" alt="categories" class="product-image img-fixed2">
                 </a>
                 <a href="index.html" class="btn-icon btn-wishlist">
                   <svg width="24" height="24" viewBox="0 0 24 24">
@@ -410,7 +404,7 @@
             <div class="product-item image-zoom-effect link-effect">
               <div class="image-holder position-relative">
                 <a href="index.html">
-                  <img src="images/product-item-3.jpg" alt="categories" class="product-image img-fluid">
+                  <img src="gambarEfi/Songket Balapak Kombinasi Suji Cair Pink Baby Silver (3.500.000).jpg" alt="categories" class="product-image img-fixed2">
                 </a>
                 <a href="index.html" class="btn-icon btn-wishlist">
                   <svg width="24" height="24" viewBox="0 0 24 24">
@@ -430,7 +424,7 @@
             <div class="product-item image-zoom-effect link-effect">
               <div class="image-holder position-relative">
                 <a href="index.html">
-                  <img src="images/product-item-4.jpg" alt="categories" class="product-image img-fluid">
+                  <img src="gambarEfi/Songket Pandai Sikek Tabur Kombinasi Suji Cair (3.000.000)(1).jpg" alt="categories" class="product-image img-fixed2">
                 </a>
                 <a href="index.html" class="btn-icon btn-wishlist">
                   <svg width="24" height="24" viewBox="0 0 24 24">
@@ -439,7 +433,7 @@
                 </a>
                 <div class="product-content">
                   <h5 class="text-uppercase fs-5 mt-3">
- <a href="index.html">Sepatu Tradisional</a>
+                    <a href="index.html">Sepatu Tradisional</a>
                   </h5>
                   <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$50.00</span></a>
                 </div>
@@ -465,7 +459,7 @@
         <div class="collection-item d-flex flex-wrap my-5">
           <div class="col-md-6 column-container">
             <div class="image-holder">
-              <img src="images/single-image-2.jpg" alt="collection" class="product-image img-fluid">
+              <img src="gambarEfi/2.png" alt="collection" class="product-image img-fixed3">
             </div>
           </div>
           <div class="col-md-6 column-container bg-white">
@@ -586,7 +580,7 @@
       <div class="row">
         <div class="video-content open-up" data-aos="zoom-out">
           <div class="video-bg">
-            <img src="images/video-image.jpg" alt="video" class="video-image img-fluid">
+            <img src="gambarEfi/3.png" alt="video" class="video-image img-fluid">
           </div>
           <div class="video-player">
             <a class="youtube" href="https://www.youtube.com/embed/pjtsGzQjFM4">

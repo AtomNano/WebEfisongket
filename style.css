@@ -127,6 +127,18 @@ body {
   object-fit: cover; /* Mengatur gambar agar terpotong jika tidak sesuai proporsi */
 }
 
+.img-fixed2 {
+  width: 248px; /* Atur lebar tetap */
+  height: 378px;
+  object-fit: cover;
+}
+
+.img-fixed3 {
+  width: 560px;
+  height: 530px;
+  object-fit: cover;
+}
+
 
 /* END gambar Fix */
 
