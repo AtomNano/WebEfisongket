@@ -38,15 +38,6 @@ if (isset($_POST['submit'])) {
 ?>
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-    }
-
-    section {
-        padding: 60px;
-    }
 
     .background {
         position: absolute;
@@ -63,15 +54,22 @@ if (isset($_POST['submit'])) {
     .container {
         position: relative;
         z-index: 1;
+        margin: 50px auto;
     }
 
     .card {
-        max-height: 70vh;
+        
+        height: auto;
     }
 
     .card img {
         object-fit: cover;
         height: 100%;
+        width: 100%;
+    }
+
+    .card-body {
+        padding: 2rem;
     }
 </style>
 
@@ -93,8 +91,8 @@ if (isset($_POST['submit'])) {
                         <!-- Kolom Form -->
                         <div class="col-md-6">
                             <div class="card-body p-5">
-                                <h2 class="text-center fw-bold">Reset Password</h2>
-                                <h2 class="text-center mb-4 fw-bold">Efi Songket</h2>
+                                <h3 class="text-center fw-bold">Reset Password</h3>
+                                <h3 class="text-center fw-bold">Efi Songket</h3>
                                 <!-- Pesan -->
                                 <?php if ($message) echo $message; ?>
                                 <form method="POST" action="">
@@ -115,7 +113,7 @@ if (isset($_POST['submit'])) {
                                     </div>
                                     <!-- Tombol -->
                                     <div class="d-grid">
-                                        <button type="submit" name="submit" class="btn btn-primary">Reset Password</button>
+                                        <button type="submit" name="submit" class="btn btn-primary rounded-pill">Reset Password</button>
                                     </div>
                                 </form>
                                 <!-- Tautan -->

@@ -37,13 +37,13 @@ if (isset($_POST['submit'])) {
             $mail->Port = 465;
 
             //Recipients
-            $mail->setFrom('your-email@gmail.com', 'Your Name'); // Replace with your email and name
+            $mail->setFrom('no-reply@gmail.com', 'Efi-songket Reset Password'); // Replace with your email and name
             $mail->addAddress($email);
 
             //Content
             $mail->isHTML(true);
             $mail->Subject = 'Password Reset Request';
-            $mail->Body = "Your verification code is: <strong>$verification_code</strong>";
+            $mail->Body = "Your verification code is: <strong>$verification_code</strong><br><br>Please click the following link to reset your password: <a href='http://localhost/WEBEFISONGKET/index.php?p=reset_password'>Reset Password</a>";
 
             $mail->send();
             // Notify the user and redirect to reset_password.php with the email as a query parameter
