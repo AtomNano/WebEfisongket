@@ -22,5 +22,4 @@ $selected_products = isset($products[$category]) ? $products[$category] : [];
 // Mengembalikan data dalam format JSON
 header('Content-Type: application/json');
 echo json_encode($selected_products);
-
 ?>

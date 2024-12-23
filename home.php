@@ -4,6 +4,17 @@ include 'phpconection.php';
 // Fetch products to display on home.php
 $query = "SELECT * FROM products";
 $result = mysqli_query($db, $query);
+
+
+// Fetch categories from the database
+$categoryQuery = "SELECT * FROM kategori";
+$categoryResult = mysqli_query($db, $categoryQuery);
+$categories = mysqli_fetch_all($categoryResult, MYSQLI_ASSOC);
+
+// Fetch carousel items from the database
+$carouselQuery = "SELECT * FROM products ORDER BY created_at DESC LIMIT 3";
+$carouselResult = mysqli_query($db, $carouselQuery);
+$carouselItems = mysqli_fetch_all($carouselResult, MYSQLI_ASSOC);
 ?>
 
 <!-- Content Section -->
@@ -43,44 +54,36 @@ $result = mysqli_query($db, $query);
       <!-- end card -->
     </section>
 
-
     <div class="container mt-5 mb-5" data-aos="fade-up" id="category">
-        <!-- Best Sellers Title -->
-        <h2 class="text-center my-3 mb-5">Best Sellers Efi Songket</h2>
+    <h2 class="text-center my-3 mb-5">Best Sellers Efi Songket</h2>
 
-        <!-- Barisan Shop by Category dan View All -->
-        <div class="row mb-3">
-            <div class="col-6">
-                <h5 class="shop-by-category text-uppercase">Shop by Category</h5>
-            </div>
-            <div class="col-6 text-end">
-                <button class="btn btn-outline-primary rounded-5">
-                    Lihat Semua <i class="bi bi-arrow-right"></i>
-                </button>
-            </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <h5 class="shop-by-category text-uppercase">Shop by Category</h5>
         </div>
-
-        <!-- Category Tabs -->
-        <nav class="my-3">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 d-flex flex-row justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link animated-link text-dark px-3 fw-bold" href="#"
-                        data-category="songket">Songket</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link animated-link text-dark px-3 fw-bold" href="#" data-category="bordir">Bordir</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link animated-link text-dark px-3 fw-bold" href="#" data-category="batik">Batik</a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Products Grid -->
-        <div class="row g-4" id="product-grid">
-            <!-- Produk akan dimuat di sini -->
+        <div class="col-6 text-end">
+            <button class="btn btn-outline-primary rounded-5">
+                Lihat Semua <i class="bi bi-arrow-right"></i>
+            </button>
         </div>
     </div>
+
+    <nav class="my-3">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 d-flex flex-row justify-content-center">
+            <?php foreach ($categories as $category): ?>
+                <li class="nav-item">
+                    <a class="nav-link animated-link text-dark px-3 fw-bold" href="#" data-category="<?= $category['nama_kategori']; ?>"><?= ucfirst($category['nama_kategori']); ?></a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </nav>
+
+    <div class="row g-4" id="product-grid">
+        </div>
+</div>
+
+<!-- END BEST SELLER -->
+
 
     <!-- END BEST SELLER -->
 
@@ -317,3 +320,51 @@ $carouselItems = [
         </div>
     </section>
 </div>
+
+<script>
+$(document).ready(function() {
+    // Fungsi untuk memuat produk berdasarkan kategori
+    function loadProducts(category) {
+        $.ajax({
+            url: 'getProducts.php', // Ganti dengan path ke getProducts.php
+            type: 'GET',
+            data: { category: category },
+            dataType: 'json',
+            success: function(data) {
+                var productGrid = $('#product-grid');
+                productGrid.empty(); // Kosongkan grid produk
+
+                // Loop melalui data produk dan tambahkan ke grid
+                $.each(data, function(index, product) {
+                    var productElement = `
+                        <div class="col-md-3">
+                            <div class="card h-100">
+                                <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">${product.name}</h5>
+                                    <p class="card-text flex-grow-1">${product.price}</p>
+                                    <a href="#" class="btn btn-primary mt-auto">Lihat Detail</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    productGrid.append(productElement);
+                });
+            },
+            error: function() {
+                console.error('Gagal memuat produk.');
+            }
+        });
+    }
+
+    // Event handler untuk klik kategori
+    $('.nav-link').click(function(e) {
+        e.preventDefault();
+        var category = $(this).data('category');
+        loadProducts(category);
+    });
+
+    // Muat produk awal (misalnya, kategori 'songket')
+    loadProducts('songket');
+});
+</script>
