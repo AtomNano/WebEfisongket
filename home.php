@@ -62,8 +62,8 @@ $carouselItems = mysqli_fetch_all($carouselResult, MYSQLI_ASSOC);
             <h5 class="shop-by-category text-uppercase">Shop by Category</h5>
         </div>
         <div class="col-6 text-end">
-            <button class="btn btn-outline-primary rounded-5">
-                Lihat Semua <i class="bi bi-arrow-right"></i>
+            <button class="btn btn-primary rounded-pill"><a href="index.php?p=toko" class="text-light">Lihat Semua <i class="bi bi-arrow-right"></i></a>
+            
             </button>
         </div>
     </div>
