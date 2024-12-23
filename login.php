@@ -1,84 +1,151 @@
 <?php
-include 'phpconection.php';
 
-$message = '';
+include 'phpconection.php'; // Menghubungkan ke database
 
-// Periksa jika form telah disubmit
+$title = 'Efi Songket - Koleksi Terbaru';
+$error = '';
+
+// Pastikan form login di-submit
 if (isset($_POST['submit'])) {
-    // Ambil input dari form
+    // Menangkap dan membersihkan input
     $email = mysqli_real_escape_string($db, $_POST['email']);
-    $new_password = $_POST['new_password'];
-    $confirm_password = $_POST['confirm_password'];
+    $password = $_POST['password'];
 
-    // Periksa apakah password baru dan konfirmasi password baru cocok
-    if ($new_password !== $confirm_password) {
-        $message = "<div class='alert alert-danger'>Password baru dan konfirmasi password tidak cocok!</div>";
-    } else {
-        $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT);  // Enkripsi password baru
+    // Gunakan prepared statements untuk query agar lebih aman
+    $query = "SELECT * FROM user WHERE email=?";
+    $stmt = mysqli_prepare($db, $query);
+    mysqli_stmt_bind_param($stmt, 's', $email); // Bind email ke parameter
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
-        // Query untuk mencari email
-        $query = "SELECT * FROM user WHERE email = '$email'";
-        $result = mysqli_query($db, $query);
+    // Jika ada pengguna yang ditemukan
+    if ($result && mysqli_num_rows($result) > 0) {
+        $data_login = mysqli_fetch_assoc($result);
 
-        if ($result && mysqli_num_rows($result) > 0) {
-            // Update password baru
-            $update_query = "UPDATE user SET password = '$new_password_hashed' WHERE email = '$email'";
-            if (mysqli_query($db, $update_query)) {
-                $message = "<div class='alert alert-success'>Password berhasil diubah!</div>";
+        // Verifikasi password yang dimasukkan dengan password yang ada di database
+        if (password_verify($password, $data_login['password'])) {
+            // Update waktu login terakhir
+            $current_time = date('Y-m-d H:i:s');
+            $update_query = "UPDATE user SET last_login=? WHERE id=?";
+            $update_stmt = mysqli_prepare($db, $update_query);
+            mysqli_stmt_bind_param($update_stmt, 'si', $current_time, $data_login['id']);
+            mysqli_stmt_execute($update_stmt);
+
+            // Buat session untuk pengguna
+            $_SESSION['user_id'] = $data_login['id'];
+            $_SESSION['email'] = $data_login['email'];
+            $_SESSION['name'] = $data_login['name']; // Pastikan 'name' ada dalam hasil query
+            $_SESSION['level'] = $data_login['level']; // Gunakan 'level' untuk role
+
+            // Pastikan bahwa 'level' sudah ada dalam session dan redirect sesuai level
+            if (isset($_SESSION['level'])) {
+                if ($_SESSION['level'] == 'admin') {
+                    // Redirect ke halaman admin jika level adalah admin
+                    header('Location: admin/index.php');
+                } else {
+                    // Redirect ke halaman utama untuk pengguna biasa
+                    header('Location: index.php?p=home');
+                }
             } else {
-                $message = "<div class='alert alert-danger'>Gagal memperbarui password. Silakan coba lagi.</div>";
+                // Jika level tidak ditemukan dalam session
+                echo "<script>alert('Level tidak ditemukan!');</script>";
             }
+            exit;
         } else {
-            $message = "<div class='alert alert-danger'>Email tidak ditemukan!</div>";
+            // Password salah
+            echo "<script>alert('Password salah!');</script>";
         }
+    } else {
+        // Email tidak ditemukan
+        echo "<script>alert('Email tidak ditemukan!');</script>";
     }
 }
+
 ?>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+    }
 
-<section class="vh-100 d-flex align-items-center">
+    section {
+        padding: 60px;
+    }
+
+    .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('gambarEfi/A_modern_web_background_inspired_by_Indonesian_tra.png.webp') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(8px);
+        z-index: -1;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .card {
+        max-height: 70vh;
+    }
+
+    .card img {
+        object-fit: cover;
+        height: 100%;
+    }
+</style>
+
+<div class="background"></div>
+
+<section class="d-flex align-items-center">
     <div class="container">
-        <div class="row justify-content-center align-items-center">
-            <div class="col-md-6">
-                <div class="card form-card p-4">
-                    <div class="text-center mb-4">
-                        <i class="bi bi-shield-lock-fill form-icon"></i>
-                        <h2 class="mt-2">Lupa Password</h2>
-                    </div>
-
-                    <!-- Pesan -->
-                    <?php if ($message) echo $message; ?>
-
-                    <form method="POST" action="">
-                        <!-- Email -->
-                        <div class="form-outline mb-3">
-                            <label for="email" class="form-label">Alamat Email</label>
-                            <input type="email" id="email" name="email" class="form-control" placeholder="Masukkan email Anda" required>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg rounded-5 overflow-hidden">
+                    <div class="row g-0">
+                        <!-- Kolom Gambar -->
+                        <div class="col-md-6 d-none d-md-block">
+                            <img src="gambarEfi/A_traditional_yet_modern_design_featuring_a_promin.png.webp" 
+                                 alt="Efi Songket" 
+                                 class="img-fluid h-100" 
+                                 style="object-fit: cover;">
                         </div>
-
-                        <!-- Password Baru -->
-                        <div class="form-outline mb-3">
-                            <label for="new_password" class="form-label">Password Baru</label>
-                            <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Masukkan password baru Anda" required>
+                        <!-- Kolom Form Login -->
+                        <div class="col-md-6">
+                            <div class="card-body p-5">
+                                <h2 class="text-center fw-bold">Masuk</h2>
+                                <h2 class="text-center mb-4 fw-bold">Efi Songket</h2>
+                                <form method="POST">
+                                    <!-- Input Email -->
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Alamat Email</label>
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="Masukkan email Anda" required>
+                                    </div>
+                                    <!-- Input Password -->
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Kata Sandi</label>
+                                        <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan kata sandi Anda" required>
+                                    </div>
+                                    <!-- Tombol Login -->
+                                    <div class="d-grid">
+                                        <button type="submit" name="submit" class="btn btn-primary rounded-pill">Masuk</button>
+                                    </div>
+                                </form>
+                                <div class="text-center mt-3">
+                                    <a href="index.php?p=forgot_password" class="text-muted">Lupa kata sandi?</a><br>
+                                    <span>Belum punya akun? <a href="index.php?p=register" class="text-primary">Daftar di sini</a></span>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Konfirmasi Password Baru -->
-                        <div class="form-outline mb-4">
-                            <label for="confirm_password" class="form-label">Konfirmasi Password Baru</label>
-                            <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Konfirmasi password baru Anda" required>
-                        </div>
-
-                        <!-- Tombol -->
-                        <div class="d-grid">
-                            <button type="submit" name="submit" class="btn btn-primary">Reset Password</button>
-                        </div>
-                    </form>
-
-                    <!-- Tautan -->
-                    <div class="text-center mt-4">
-                        <a href="index.php?p=login" class="text-muted">Kembali ke Login</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
