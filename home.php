@@ -35,16 +35,44 @@ function getTopSellingProducts($db) {
 $topProducts = getTopSellingProducts($db);
 ?>
 
+<style>
+    #billboard {
+        background-image: url('gambarEfi/bg1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        
+        
+    }
+
+    #billboard::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Optional: to add a dark overlay */
+        z-index: 1;
+        filter: blur(2px);
+    }
+
+    #billboard .container {
+        position: relative;
+        z-index: 2;
+    }
+</style>
 <!-- Bagian Konten -->
 <div class="">
 
     <!-- Bagian Billboard -->
-    <section id="billboard" class="bg-light py-2">
+    <section id="billboard" class="py-2">
         <div class="container">
             <div class="row justify-content-center">
-                <h1 class="section-title text-center" data-aos="fade-up">Koleksi Terbaru Efi Songket</h1>
+                <h1 class="section-title text-center text-white" data-aos="fade-up">Koleksi Terbaru Efi Songket</h1>
                 <div class="col-md-6 text-center" data-aos="fade-up" data-aos-delay="300">
-                    <p>Temukan koleksi baju tradisional songket yang elegan dan berkualitas tinggi. Setiap produk
+                    <p class="text-white">Temukan koleksi baju tradisional songket yang elegan dan berkualitas tinggi. Setiap produk
                         dirancang dengan penuh perhatian untuk memberikan kenyamanan dan gaya.</p>
                 </div>
             </div>
@@ -68,8 +96,8 @@ $topProducts = getTopSellingProducts($db);
     </section>
 
     <!-- Bagian Best Seller -->
-    <div class="container mt-5 mb-5" data-aos="fade-up">
-        <h2 class="text-center my-3 mb-5">Best Sellers Efi Songket</h2>
+    <div class="container y-1" data-aos="fade-up">
+        <h2 class="text-center my-3 mb-6">Best Sellers Efi Songket</h2>
 
         <div class="row g-4">
             <?php
@@ -96,24 +124,6 @@ $topProducts = getTopSellingProducts($db);
     </div>
     <!-- Akhir Best Seller -->
 
-    <!-- Bagian Belanja Berdasarkan Kategori -->
-    <div class="container mt-5 mb-5" data-aos="fade-up" id="category">
-        <h2 class="text-center my-3 mb-5">Belanja Berdasarkan Kategori</h2>
-
-        <nav class="my-3">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 d-flex flex-row justify-content-center">
-                <?php foreach ($categories as $category): ?>
-                    <li class="nav-item">
-                        <a class="nav-link animated-link text-dark px-3 fw-bold" href="#" data-category="<?= $category['id_kategori']; ?>"><?= ucfirst($category['nama_kategori']); ?></a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </nav>
-
-        <div class="row g-4" id="product-grid">
-            <!-- Produk akan dimuat di sini berdasarkan kategori yang dipilih -->
-        </div>
-    </div>
     <!-- Akhir Belanja Berdasarkan Kategori -->
 
     <!-- Bagian Carousel -->
@@ -137,8 +147,8 @@ $topProducts = getTopSellingProducts($db);
                             <div class="carousel-overlay">
                                 <img src="gambarEfi/1.png" alt="Keindahan Songket" class="d-block w-100" style="height: 500px; object-fit: cover; filter: brightness(70%);">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3 class="font-weight-bold text-black">Keindahan Songket</h3>
-                                    <p class="text-black h3">Menampilkan keanggunan dan tradisi dalam setiap helai kain.</p>
+                                    <h3 class="font-weight-bold text-white">Keindahan Songket</h3>
+                                    <p class="text-white h3">Menampilkan keanggunan dan tradisi dalam setiap helai kain.</p>
                                 </div>
                             </div>
                         </div>
@@ -146,8 +156,8 @@ $topProducts = getTopSellingProducts($db);
                             <div class="carousel-overlay">
                                 <img src="gambarEfi/2.png" alt="Elegansi Tradisional" class="d-block w-100" style="height: 500px; object-fit: cover; filter: brightness(70%);">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3 class="font-weight-bold text-black">Elegansi Tradisional</h3>
-                                    <p class="text-black h3">Kain songket yang memadukan warisan budaya dengan gaya modern.</p>
+                                    <h3 class="font-weight-bold text-white">Elegansi Tradisional</h3>
+                                    <p class="text-white h3">Kain songket yang memadukan warisan budaya dengan gaya modern.</p>
                                 </div>
                             </div>
                         </div>
@@ -155,8 +165,8 @@ $topProducts = getTopSellingProducts($db);
                             <div class="carousel-overlay">
                                 <img src="gambarEfi/3.png" alt="Kualitas Terbaik" class="d-block w-100" style="height: 500px; object-fit: cover; filter: brightness(70%);">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3 class="font-weight-bold text-black">Kualitas Terbaik</h3>
-                                    <p class="text-black h3">Setiap produk dibuat dengan bahan terbaik dan perhatian terhadap detail.</p>
+                                    <h3 class="font-weight-bold text-white">Kualitas Terbaik</h3>
+                                    <p class="text-white h3">Setiap produk dibuat dengan bahan terbaik dan perhatian terhadap detail.</p>
                                 </div>
                             </div>
                         </div>
@@ -260,52 +270,3 @@ $topProducts = getTopSellingProducts($db);
     </section>
 </div>
 
-<script>
-$(document).ready(function() {
-    // Fungsi untuk memuat produk berdasarkan kategori
-    function loadProducts(category) {
-        console.log('Loading products for category:', category); // Debug log
-        $.ajax({
-            url: 'getProductsByCategory.php', // Ganti dengan path ke getProductsByCategory.php
-            type: 'POST',
-            data: { category: category },
-            dataType: 'json',
-            success: function(data) {
-                console.log('Products loaded:', data); // Debug log
-                var productGrid = $('#product-grid');
-                productGrid.empty(); // Kosongkan grid produk
-
-                // Loop melalui data produk dan tambahkan ke grid
-                $.each(data, function(index, product) {
-                    var productElement = `
-                        <div class="col-md-3">
-                            <div class="card h-100">
-                                <img src="admin/uploads/${product.image}" class="card-img-top" alt="${product.name}">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">${product.name}</h5>
-                                    <p class="card-text flex-grow-1">Rp ${product.price.toLocaleString('id-ID')}</p>
-                                    <a href="index.php?p=toko&id=${product.id}" class="btn btn-primary mt-auto">Lihat Detail</a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    productGrid.append(productElement);
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Gagal memuat produk:', status, error); // Debug log
-            }
-        });
-    }
-
-    // Event handler untuk klik kategori
-    $('.nav-link').click(function(e) {
-        e.preventDefault();
-        var category = $(this).data('category');
-        loadProducts(category);
-    });
-
-    // Muat produk awal (misalnya, kategori 'songket')
-    loadProducts(1); // 1 adalah id_kategori untuk 'songket'
-});
-</script>
