@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta'); // Set to your desired time zone
 include 'phpconection.php';
 
 $message = '';
@@ -6,7 +7,7 @@ $message = '';
 // Periksa jika form telah disubmit
 if (isset($_POST['submit'])) {
     // Ambil input dari form
-    $reset_token = mysqli_real_escape_string($db, $_POST['reset_token']);
+    $verification_code = mysqli_real_escape_string($db, $_POST['verification_code']);
     $new_password = mysqli_real_escape_string($db, $_POST['new_password']);
     $confirm_password = mysqli_real_escape_string($db, $_POST['confirm_password']);
 
@@ -14,22 +15,23 @@ if (isset($_POST['submit'])) {
     if ($new_password !== $confirm_password) {
         $message = "<div class='alert alert-danger'>Password baru dan konfirmasi password tidak cocok!</div>";
     } else {
-        // Query untuk mencari reset token dan memeriksa apakah masih berlaku
-        $query = "SELECT * FROM user WHERE reset_token = '$reset_token' AND reset_token_expiry > NOW()";
+        // Query untuk mencari verification code dan memeriksa apakah masih berlaku
+        $query = "SELECT * FROM user WHERE reset_token = '$verification_code' AND reset_token_expiry > NOW()";
         $result = mysqli_query($db, $query);
 
         if ($result && mysqli_num_rows($result) > 0) {
+            $data = mysqli_fetch_assoc($result);
             $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT);  // Enkripsi password baru
 
-            // Update password baru dan hapus reset token
-            $update_query = "UPDATE user SET password = '$new_password_hashed', reset_token = NULL, reset_token_expiry = NULL WHERE reset_token = '$reset_token'";
+            // Update password baru dan hapus verification code
+            $update_query = "UPDATE user SET password = '$new_password_hashed', reset_token = NULL, reset_token_expiry = NULL WHERE reset_token = '$verification_code'";
             if (mysqli_query($db, $update_query)) {
                 $message = "<div class='alert alert-success'>Password berhasil diubah!</div>";
             } else {
                 $message = "<div class='alert alert-danger'>Gagal memperbarui password. Silakan coba lagi.</div>";
             }
         } else {
-            $message = "<div class='alert alert-danger'>Token reset tidak valid atau telah kedaluwarsa!</div>";
+            $message = "<div class='alert alert-danger'>Kode verifikasi tidak valid atau telah kedaluwarsa!</div>";
         }
     }
 }
@@ -37,64 +39,94 @@ if (isset($_POST['submit'])) {
 
 <style>
     body {
-        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
     }
-    .form-card {
-        border-radius: 15px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
+    section {
+        padding: 60px;
     }
-    .form-icon {
-        font-size: 50px;
-        color: #007bff;
+
+    .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('gambarEfi/A_modern_web_background_inspired_by_Indonesian_tra.png.webp') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(8px);
+        z-index: -1;
     }
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
+
+    .container {
+        position: relative;
+        z-index: 1;
     }
-    .btn-primary:hover {
-        background-color: #0056b3;
+
+    .card {
+        max-height: 70vh;
+    }
+
+    .card img {
+        object-fit: cover;
+        height: 100%;
     }
 </style>
 
-<div class="container py-5">
-    <div class="row justify-content-center align-items-center">
-        <div class="col-md-6">
-            <div class="card form-card p-4">
-                <div class="text-center mb-4">
-                    <i class="bi bi-shield-lock-fill form-icon"></i>
-                    <h2 class="mt-2">Reset Password</h2>
-                </div>
+<div class="background"></div>
 
-                <!-- Pesan -->
-                <?php if ($message) echo $message; ?>
-
-                <form method="POST" action="">
-                    <!-- Reset Token -->
-                    <input type="hidden" name="reset_token" value="<?php echo $_GET['token']; ?>">
-
-                    <!-- Password Baru -->
-                    <div class="form-outline mb-3">
-                        <label for="new_password" class="form-label">Password Baru</label>
-                        <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Masukkan password baru Anda" required>
+<section class="d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg rounded-5 overflow-hidden">
+                    <div class="row g-0">
+                        <!-- Kolom Gambar -->
+                        <div class="col-md-6 d-none d-md-block">
+                            <img src="gambarEfi/A_traditional_yet_modern_design_featuring_a_promin.png.webp" 
+                                 alt="Efi Songket" 
+                                 class="img-fluid h-100" 
+                                 style="object-fit: cover;">
+                        </div>
+                        <!-- Kolom Form -->
+                        <div class="col-md-6">
+                            <div class="card-body p-5">
+                                <h2 class="text-center fw-bold">Reset Password</h2>
+                                <h2 class="text-center mb-4 fw-bold">Efi Songket</h2>
+                                <!-- Pesan -->
+                                <?php if ($message) echo $message; ?>
+                                <form method="POST" action="">
+                                    <!-- Verification Code -->
+                                    <div class="mb-3">
+                                        <label for="verification_code" class="form-label">Kode Verifikasi</label>
+                                        <input type="text" id="verification_code" name="verification_code" class="form-control" placeholder="Masukkan kode verifikasi Anda" required>
+                                    </div>
+                                    <!-- Password Baru -->
+                                    <div class="mb-3">
+                                        <label for="new_password" class="form-label">Password Baru</label>
+                                        <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Masukkan password baru Anda" required>
+                                    </div>
+                                    <!-- Konfirmasi Password Baru -->
+                                    <div class="mb-4">
+                                        <label for="confirm_password" class="form-label">Konfirmasi Password Baru</label>
+                                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Konfirmasi password baru Anda" required>
+                                    </div>
+                                    <!-- Tombol -->
+                                    <div class="d-grid">
+                                        <button type="submit" name="submit" class="btn btn-primary">Reset Password</button>
+                                    </div>
+                                </form>
+                                <!-- Tautan -->
+                                <div class="text-center mt-4">
+                                    <a href="index.php?p=login" class="text-muted">Kembali ke Login</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Konfirmasi Password Baru -->
-                    <div class="form-outline mb-4">
-                        <label for="confirm_password" class="form-label">Konfirmasi Password Baru</label>
-                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Konfirmasi password baru Anda" required>
-                    </div>
-
-                    <!-- Tombol -->
-                    <div class="d-grid">
-                        <button type="submit" name="submit" class="btn btn-primary">Reset Password</button>
-                    </div>
-                </form>
-
-                <!-- Tautan -->
-                <div class="text-center mt-4">
-                    <a href="index.php?p=login" class="text-muted">Kembali ke Login</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
