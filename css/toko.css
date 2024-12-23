@@ -1,0 +1,92 @@
+/* Styling untuk input pencarian */
+.search-input {
+    width: 100%;
+    height: 48px;
+    border-radius: 10px;
+    padding-left: 50px;
+    background: #F7F7F7;
+    font-size: 14px;
+    color: #626264;
+    position: relative;
+}
+
+/* Styling ikon pencarian di dalam input */
+#searchBtn {
+    background-color: #141416;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+}
+
+/* Styling kategori dropdown */
+#categorySelect {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background: #F7F7F7;
+    font-size: 14px;
+}
+
+/* Styling produk */
+.product-item {
+    position: relative;
+    margin-bottom: 20px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.product-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.product-item .product-content {
+    padding: 10px;
+}
+
+.product-item .product-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #182135;
+}
+
+.product-item .product-price {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Styling ikon wishlist */
+.btn-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #fff;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+
+
+/* Gambar FIX */
+
+.img-fixed {
+    width: 400px; /* Atur lebar tetap */
+    height: 500px; /* Atur tinggi tetap */
+    object-fit: cover; /* Mengatur gambar agar terpotong jika tidak sesuai proporsi */
+  }
+  
+  .img-fixed2 {
+    width: 248px; /* Atur lebar tetap */
+    height: 378px;
+    object-fit: cover;
+  }
+  
+  .img-fixed3 {
+    width: 560px;
+    height: 530px;
+    object-fit: cover;
+  }
+  

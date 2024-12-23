@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Efi Songket - Baju Tradisional</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="author" content="TemplatesJungle">
+  <meta name="keywords" content="ecommerce,fashion,traditional clothing, songket">
+  <meta name="description" content="Efi Songket - Menyediakan baju tradisional songket berkualitas tinggi.">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="css/vendor.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Marcellus&display=swap"
+    rel="stylesheet">
+</head>
+
+<body class="homepage">
+  <!-- Preloader Section -->
+  <div class="preloader text-white fs-6 text-uppercase overflow-hidden"></div>
+<!-- Search Popup -->
+<div class="search-popup">
+  <div class="search-popup-container">
+    <form role="search" method="get" class="form-group" action="">
+      <div class="position-relative">
+        <input type="search" id="search-form" class="form-control border-0 border-bottom" placeholder="Cari produk songket..." value="" name="s" />
+        <button type="submit" class="search-submit border-0 position-absolute bg-white" style="top: 0; right: 0; height: 100%; padding: 0 15px;">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+      <h5 class="cat-list-title">Kategori Songket</h5>
+      <ul class="cat-list">
+        <li class="cat-list-item"><a href="#" title="Baju Songket">Baju Songket</a></li>
+        <li class="cat-list-item"><a href="#" title="Kain Songket">Kain Songket</a></li>
+        <li class="cat-list-item"><a href="#" title="Aksesori Songket">Aksesori Songket</a></li>
+        <li class="cat-list-item"><a href="#" title="Sepatu Songket">Sepatu Songket</a></li>
+      </ul>
+    </form>
+  </div>
+</div>
+  <!-- Offcanvas Cart Section -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+    <div class="offcanvas-header justify-content-between">
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Keranjang Anda</span>
+          <span class="badge bg-primary rounded-pill">3</span>
+        </h4>
+        <!-- Cart Items List -->
+        <ul class="list-group mb-3">
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">Baju Songket Tradisional</h6>
+              <small class="text-muted">Deskripsi singkat</small>
+            </div>
+            <span class="text-muted">$120</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">Kain Song ket Premium</h6>
+              <small class="text-muted">Deskripsi singkat</small>
+            </div>
+            <span class="text-muted">$80</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">Aksesori Songket</h6>
+              <small class="text-muted">Deskripsi singkat</small>
+            </div>
+            <span class="text-muted">$30</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (USD)</span>
+            <strong>$230</strong>
+          </li>
+        </ul>
+        <button class="w-100 btn btn-primary btn-lg" type="button">Lanjutkan ke Pembayaran</button>
+      </div>
+    </div>
+  </div>
+
+<!-- Navbar Section with Hover Animation -->
+<nav class="navbar navbar-expand-lg bg-light text-uppercase fs-6 p-3 border-bottom">
+  <div class="container-fluid">
+    <!-- Brand Name on the Left -->
+    <a class="navbar-brand text-primary" href="index.html">Efi Songket</a>
+    
+    <!-- Toggler for Offcanvas Menu -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Offcanvas Menu -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <!-- Centered Navbar Links with Animation -->
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link animated-link" href="#">Beranda</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link animated-link" href="#">Toko</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link animated-link" href="#">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link animated-link" href="#">Halaman</a>
+          </li>
+        </ul>
+
+        <!-- Right Side Icons -->
+      </div>
+    </div>
+    <div class="d-flex align-items-center">
+      <a href="#" class="text-uppercase me-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+        <i class="bi bi-cart m-2 h5 animated-icon"></i>
+      </a>
+      <a href="#">
+        <i class="bi bi-person-circle m-2 h5 animated-icon"></i>
+      </a>
+    </div>
+  </div>
+</nav>
+
+
+  <section id="billboard" class="bg-light py-5">
+    <div class="container">
+      <!-- end -->
+      
+      <div class="row justify-content-center">
+        <h1 class="section-title text-center mt-1" data-aos="fade-up">Koleksi Terbaru</h1>
+        <div class="col-md-6 text-center" data-aos="fade-up" data-aos-delay="300">
+          <p>Temukan koleksi baju tradisional songket yang elegan dan berkualitas tinggi. Setiap produk dirancang dengan penuh perhatian untuk memberikan kenyamanan dan gaya.</p>
+        </div>
+      </div>
+
+      <!-- card -->
+
+      <div class="custom-card  d-flex flex-column flex-md-row align-items-center" data-aos="fade-up">
+        <!-- Text Section -->
+        <div class="text-section mr-md-4 mb-4 mb-md-0" data-aos="fade-up">
+            <p class="text-muted mb-1">Efi Songket Exclusive</p>
+            <h2 class="font-weight-bold mb-2">Songket Balapak Banyak Motif</h2>
+            <p class="text">Kain songket asli dengan motif tradisional dan kualitas benang terbaik. Cocok untuk acara formal atau koleksi pribadi.</p>
+            <button class="btn btn-custom">Lihat Detail</button>
+            <!-- Dots -->
+        
+        </div>
+        <!-- Image Section -->
+        <div class="image-placeholder flex-grow-1 image-zoom-effect" data-aos="fade-up">
+            <img src="gambarEfi/1.png" alt="Songket Efi" class="img-fluid landscape-image" />
+        </div>
+    </div>
+    
+      <!-- end card -->
+
+      <div class="row">
+        <div class="swiper main-swiper py-4" data-aos="fade-up" data-aos-delay="600">
+          <div class="swiper-wrapper d-flex border-animation-left">
+            <div class="swiper-slide">
+              <div class="banner-item image-zoom-effect">
+                <div class="image-holder">
+                  <a href="#">
+                    <img src="gambarEfi/Songket Balapak Banyak Motif Benang Dua (3.800.000).jpg" alt="product" class="img-fixed">
+                  </a>
+                </div>
+                <div class="banner-content py-4">
+                  <h5 class="element-title text-uppercase">
+                    <a href="index.html" class="item-anchor">Baju Songket Tradisional</a>
+                  </h5>
+                  <p>Desain yang memukau dengan sentuhan tradisional yang modern.</p>
+                  <div class="btn-left">
+                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Jelajahi Sekarang</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="banner-item image-zoom-effect">
+                <div class="image-holder">
+                  <a href="#">
+                    <img src="gambarEfi/Songket Balapak Biru Tosca Motif Kombinasi Suji Cair (3.800.000).jpg" alt="product" class="img-fixed">
+                  </a>
+                </div>
+                <div class="banner-content py-4">
+                  <h5 class="element-title text-uppercase">
+                    <a href="index.html" class="item-anchor">Kain Songket Premium</a>
+                  </h5>
+                  <p>Kain berkualitas tinggi yang cocok untuk berbagai acara.</p>
+                  <div class="btn-left">
+                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Jelajahi Sekarang</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="banner-item image-zoom-effect">
+                <div class="image-holder">
+                  <a href="#">
+                    <img src="gambarEfi/Songket Balapak Kombinasi Suji Cair Pink Baby Silver (3.500.000).jpg" alt="product" class="img-fixed">
+                  </a>
+                </div>
+                <div class="banner-content py-4">
+                  <h5 class="element-title text-uppercase">
+                    <a href="index.html" class="item-anchor">Aksesori Songket</a>
+                  </h5>
+                  <p>Lengkapi penampilan Anda dengan aksesori yang menawan.</p>
+                  <div class="btn-left">
+                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Jelajahi Sekarang</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="banner-item image-zoom-effect">
+                <div class="image-holder">
+                  <a href="#">
+                    <img src="gambarEfi/BORDIR/Selendang Bordir Hitam (600.000).jpg" alt="product" class="img-fluid">
+                  </a>
+                </div>
+                <div class="banner-content py-4">
+                  <h5 class="element-title text-uppercase">
+                    <a href="index.html" class="item-anchor">Sepatu Songket</a>
+                  </h5>
+                  <p>Sepatu yang dirancang khusus untuk melengkapi baju songket Anda.</p>
+                  <div class="btn-left">
+                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Jelajahi Sekarang</a>
+                  </div </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div class="icon-arrow icon-arrow-left"><i class="bi bi-arrow-left"></i></div>
+        <div class="icon-arrow icon-arrow-right">
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 text-center" data-aos="fade-in" data-aos-delay="0">
+          <div class="py-5">
+            <svg width="38" height="38" viewBox="0 0 24 24">
+              <use xlink:href="#calendar"></use>
+            </svg>
+            <h4 class="element-title text-capitalize my-3">Pesan Janji Temu</h4>
+            <p>Atur waktu untuk melihat koleksi kami secara langsung.</p>
+          </div>
+        </div>
+        <div class="col-md-3 text-center" data-aos="fade-in" data-aos-delay="300">
+          <div class="py-5">
+            <svg width="38" height="38" viewBox="0 0 24 24">
+              <use xlink:href="#shopping-bag"></use>
+            </svg>
+            <h4 class="element-title text-capitalize my-3">Ambil di Toko</h4>
+            <p>Pilih produk dan ambil langsung di toko kami.</p>
+          </div>
+        </div>
+        <div class="col-md-3 text-center" data-aos="fade-in" data-aos-delay="600">
+          <div class="py-5">
+            <svg width="38" height="38" viewBox="0 0 24 24">
+              <use xlink:href="#gift"></use>
+            </svg>
+            <h4 class="element-title text-capitalize my-3">Kemasan Khusus</h4>
+            <p>Kemasan yang menarik untuk setiap pembelian.</p>
+          </div>
+        </div>
+        <div class="col-md-3 text-center" data-aos="fade-in" data-aos-delay="900">
+          <div class="py-5">
+            <svg width="38" height="38" viewBox="0 0 24 24">
+              <use xlink:href="#arrow-cycle"></use>
+            </svg>
+            <h4 class="element-title text-capitalize my-3">Pengembalian Global Gratis</h4>
+            <p>Jika tidak puas, kami menawarkan pengembalian gratis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="categories overflow-hidden">
+    <div class="container">
+      <div class="open-up" data-aos="zoom-out">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="cat-item image-zoom-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="gambarEfi/BORDIR/Selendang Kecil Bordiran Biru L40 Bahan Organza (350.000).jpg" alt="categories" class="product-image img-fixed">
+                </a>
+              </div>
+              <div class="category-content">
+                <div class="product-button">
+                  <a href="index.html" class="btn btn-common text-uppercase">Belanja untuk Pria</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="cat-item image-zoom-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="gambarEfi/BORDIR/Selendang kecil bordiran hijau botol L40 bahan masmara (350.000).jpg" alt="categories" class="product-image img-fixed">
+                </a>
+              </div>
+              <div class="category-content">
+                <div class="product-button">
+                  <a href="index.html" class="btn btn-common text-uppercase">Belanja untuk Wanita</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="cat-item image-zoom-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="gambarEfi/BORDIR/Selendang kecil bordiran putih l40 bahan masmara (350.000).jpg" alt="categories" class ="product-image img-fixed">
+                </a>
+              </div>
+              <div class="category-content">
+                <div class="product-button">
+                  <a href="index.html" class="btn btn-common text-uppercase">Belanja Aksesori</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="new-arrival" class="new-arrival product-carousel py-5 position-relative overflow-hidden">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
+        <h4 class="text-uppercase">Kedatangan Baru Kami</h4>
+        <a href="index.html" class="btn-link">Lihat Semua Produk</a>
+      </div>
+      <div class="swiper product-swiper open-up" data-aos="zoom-out">
+        <div class="swiper-wrapper d-flex">
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder position-relative">
+                <a href="index.html">
+                  <img src="gambarEfi/BORDIR/Selendang Kecil Bordiran Biru L40 Bahan Organza (350.000).jpg" alt="categories" class="product-image img-fixed2">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="element-title text-uppercase fs-5 mt-3">
+                    <a href="index.html">Baju Songket Mo  dern</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$95.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder position-relative">
+                <a href="index.html">
+                  <img src="gambarEfi/Songket Balapak Satu Motif Kombinasi Suji Cair (3.200.000).jpg" alt="categories" class="product-image img-fixed2">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Kain Songket Tradisional</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$55.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder position-relative">
+                <a href="index.html">
+                  <img src="gambarEfi/Songket Balapak Kombinasi Suji Cair Pink Baby Silver (3.500.000).jpg" alt="categories" class="product-image img-fixed2">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Aksesori Songket</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$65.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder position-relative">
+                <a href="index.html">
+                  <img src="gambarEfi/Songket Pandai Sikek Tabur Kombinasi Suji Cair (3.000.000)(1).jpg" alt="categories" class="product-image img-fixed2">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Sepatu Tradisional</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$50.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="icon-arrow icon-arrow-left"><svg width="50" height="50" viewBox="0 0 24 24">
+          <use xlink:href="#arrow-left"></use>
+        </svg></div>
+      <div class="icon-arrow icon-arrow-right"><svg width="50" height="50" viewBox="0 0 24 24">
+          <use xlink:href="#arrow-right"></use>
+        </svg></div>
+    </div>
+  </section>
+
+  <section class="collection bg-light position-relative py-5">
+    <div class="container">
+      <div class="row">
+        <div class="title-xlarge text-uppercase txt-fx domino">Koleksi</div>
+        <div class="collection-item d-flex flex-wrap my-5">
+          <div class="col-md-6 column-container">
+            <div class="image-holder">
+              <img src="gambarEfi/2.png" alt="collection" class="product-image img-fixed3">
+            </div>
+          </div>
+          <div class="col-md-6 column-container bg-white">
+            <div class="collection-content p-5 m-0 m-md-5">
+              <h3 class="element-title text-uppercase">Koleksi Musim Dingin Klasik</h3>
+              <p>Koleksi ini menampilkan keindahan dan keanggunan baju songket yang cocok untuk berbagai acara. Setiap produk dirancang dengan detail yang menawan.</p>
+              <a href="#" class="btn btn-dark text-uppercase mt-3">Belanja Koleksi</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="best-sellers" class="best-sellers product-carousel py-5 position-relative overflow-hidden">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
+        <h4 class="text-uppercase">Produk Terlaris</h4>
+        <a href="index.html" class="btn-link">Lihat Semua Produk</a>
+      </div>
+      <div class="swiper product-swiper open-up" data-aos="zoom-out">
+        <div class="swiper-wrapper d-flex">
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="images/product-item-4.jpg" alt="categories" class="product-image img-fluid">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Baju Songket Elegan</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$95.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="images/product-item-3.jpg" alt="categories" class="product-image img-fluid">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Kain Songket Tradisional</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$55.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class ```html
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="images/product-item-5.jpg" alt="categories" class="product-image img-fluid">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Aksesori Songket</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$65.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="images/product-item-6.jpg" alt="categories" class="product-image img-fluid">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Sepatu Tradisional</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$70.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="icon-arrow icon-arrow-left"><svg width="50" height="50" viewBox="0 0 24 24">
+          <use xlink:href="#arrow-left"></use>
+        </svg></div>
+      <div class="icon-arrow icon-arrow-right"><svg width="50" height="50" viewBox="0 0 24 24">
+          <use xlink:href="#arrow-right"></use>
+        </svg></div>
+    </div>
+  </section>
+
+  <section class="video py-5 overflow-hidden">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="video-content open-up" data-aos="zoom-out">
+          <div class="video-bg">
+            <img src="gambarEfi/3.png" alt="video" class="video-image img-fluid">
+          </div>
+          <div class="video-player">
+            <a class="youtube" href="https://www.youtube.com/embed/pjtsGzQjFM4">
+              <svg width="24" height="24" viewBox="0 0 24 24">
+                <use xlink:href="#play"></use>
+              </svg>
+              <img src="images/text-pattern.png" alt="pattern" class="text-rotate">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials py-5 bg-light">
+    <div class="section-header text-center mt-5">
+      <h3 class="section-title">KOMENTAR PELANGGAN</h3>
+    </div>
+    <div class="swiper testimonial-swiper overflow-hidden my-5">
+      <div class="swiper-wrapper d-flex">
+        <div class="swiper-slide">
+          <div class="testimonial-item text-center">
+            <blockquote>
+              <p>“Baju songket yang saya beli sangat nyaman dan berkualitas tinggi. Saya sangat puas!”</p>
+              <div class="review-title text-uppercase">Ayu</div>
+            </blockquote>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="testimonial-item text-center">
+            <blockquote>
+              <p>“Kain songketnya sangat indah dan cocok untuk acara formal. Terima kasih Efi Songket!”</p>
+              <div class="review-title text-uppercase">Budi</div>
+            </blockquote>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="testimonial-item text-center">
+            <blockquote>
+              <p>“Pengalaman berbelanja yang luar biasa! Pelayanan yang ramah dan produk yang berkualitas.”</p>
+              <div class="review-title text-uppercase">Siti</div>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-swiper-pagination d-flex justify-content-center mb-5"></div>
+  </section>
+
+  <section id="related-products" class="related-products product-carousel py-5 position-relative overflow-hidden">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
+        <h4 class="text-uppercase">Anda Mungkin Juga Suka</h4>
+        <a href="index.html" class="btn-link">Lihat Semua Produk</a>
+      </div>
+      <div class="swiper product-swiper open-up" data-aos="zoom-out">
+        <div class="swiper-wrapper d-flex">
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="images/product-item-7.jpg" alt="product" class="product-image img-fluid">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Baju Songket Modern</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$85.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="images/product-item-8.jpg" alt="product" class="product-image img-fluid">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Kain Songket Tradisional</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$75.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="images/product-item-9.jpg" alt="product" class="product-image img-fluid">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Aksesori Songket</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$40.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="product-item image-zoom-effect link-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="images/product-item-10.jpg" alt="product" class="product-image img-fluid">
+                </a>
+                <a href="index.html" class="btn-icon btn-wishlist">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                  </svg>
+                </a>
+                <div class="product-content">
+                  <h5 class="text-uppercase fs-5 mt-3">
+                    <a href="index.html">Sepatu Tradisional</a>
+                  </ ```html
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$90.00</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="icon-arrow icon-arrow-left"><svg width="50" height="50" viewBox="0 0 24 24">
+          <use xlink:href="#arrow-left"></use>
+        </svg></div>
+      <div class="icon-arrow icon-arrow-right"><svg width="50" height="50" viewBox="0 0 24 24">
+          <use xlink:href="#arrow-right"></use>
+        </svg></div>
+    </div>
+  </section>
+
+  <section class="blog py-5">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
+        <h4 class="text-uppercase">Baca Postingan Blog</h4>
+        <a href="index.html" class="btn-link">Lihat Semua</a>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <article class="post-item">
+            <div class="post-image">
+              <a href="index.html">
+                <img src="images/post-image1.jpg" alt="image" class="post-grid-image img-fluid">
+              </a>
+            </div>
+            <div class="post-content d-flex flex-wrap gap-2 my-3">
+              <div class="post-meta text-uppercase fs-6 text-secondary">
+                <span class="post-category">Fashion /</span>
+                <span class="meta-day"> jul 11, 2022</span>
+              </div>
+              <h5 class="post-title text-uppercase">
+                <a href="index.html">Cara Menampilkan Keanggunan dengan Songket</a>
+              </h5>
+              <p>Pelajari cara memadukan baju songket dengan aksesori untuk penampilan yang menawan...</p>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-4">
+          <article class="post-item">
+            <div class="post-image">
+              <a href="index.html">
+                <img src="images/post-image2.jpg" alt="image" class="post-grid-image img-fluid">
+              </a>
+            </div>
+            <div class="post-content d-flex flex-wrap gap-2 my-3">
+              <div class="post-meta text-uppercase fs-6 text-secondary">
+                <span class="post-category">Fashion /</span>
+                <span class="meta-day"> jul 11, 2022</span>
+              </div>
+              <h5 class="post-title text-uppercase">
+                <a href="index.html">Tren Fashion Songket untuk Musim Ini</a>
+              </h5>
+              <p>Temukan tren terbaru dalam fashion songket yang akan membuat Anda tampil menonjol...</p>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-4">
+          <article class="post-item">
+            <div class="post-image">
+              <a href="index.html">
+                <img src="images/post-image3.jpg" alt="image" class="post-grid-image img-fluid">
+              </a>
+            </div>
+            <div class="post-content d-flex flex-wrap gap-2 my-3">
+              <div class="post-meta text-uppercase fs-6 text-secondary">
+                <span class="post-category">Fashion /</span>
+                <span class="meta-day"> jul 11, 2022</span>
+              </div>
+              <h5 class="post-title text-uppercase">
+                <a href="index.html">Mengapa Memilih Baju Songket?</a>
+              </h5>
+              <p>Ketahui alasan mengapa baju songket menjadi pilihan utama untuk berbagai acara...</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="logo-bar py-5 my-5">
+    <div class="container">
+      <div class="row">
+        <div class="logo-content d-flex flex-wrap justify-content-between">
+          <img src="images/logo1.png" alt="logo" class="logo-image img-fluid">
+          <img src="images/logo2.png" alt="logo" class="logo-image img-fluid">
+          <img src="images/logo3.png" alt="logo" class="logo-image img-fluid">
+          <img ```html
+          <img src="images/logo4.png" alt="logo" class="logo-image img-fluid">
+          <img src="images/logo5.png" alt="logo" class="logo-image img-fluid">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter bg-light" style="background: url(images/pattern-bg.png) no-repeat;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 py-5 my-5">
+          <div class="subscribe-header text-center pb-3">
+            <h3 class="section-title text-uppercase">Daftar untuk Newsletter Kami</h3>
+          </div>
+          <form id="form" class="d-flex flex-wrap gap-2">
+            <input type="text" name="email" placeholder="Alamat Email Anda" class="form-control form-control-lg">
+            <button class="btn btn-dark btn-lg text-uppercase w-100">Daftar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="instagram position-relative">
+    <div class="d-flex justify-content-center w-100 position-absolute bottom-0 z-1">
+      <a href="https://www.instagram.com/templatesjungle/" class="btn btn-dark px-5">Ikuti Kami di Instagram</a>
+    </div>
+    <div class="row g-0">
+      <div class="col-6 col-sm-4 col-md-2">
+        <div class="insta-item">
+          <a href="https://www.instagram.com/templatesjungle/" target="_blank">
+            <img src="images/insta-item1.jpg" alt="instagram" class="insta-image img-fluid">
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-2">
+        <div class="insta-item">
+          <a href="https://www.instagram.com/templatesjungle/" target="_blank">
+            <img src="images/insta-item2.jpg" alt="instagram" class="insta-image img-fluid">
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-2">
+        <div class="insta-item">
+          <a href="https://www.instagram.com/templatesjungle/" target="_blank">
+            <img src="images/insta-item3.jpg" alt="instagram" class="insta-image img-fluid">
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-2">
+        <div class="insta-item">
+          <a href="https://www.instagram.com/templatesjungle/" target="_blank">
+            <img src="images/insta-item4.jpg" alt="instagram" class="insta-image img-fluid">
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-2">
+        <div class="insta-item">
+          <a href="https://www.instagram.com/templatesjungle/" target="_blank">
+            <img src="images/insta-item5.jpg" alt="instagram" class="insta-image img-fluid">
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-2">
+        <div class="insta-item">
+          <a href="https://www.instagram.com/templatesjungle/" target="_blank">
+            <img src="images/insta-item6.jpg" alt="instagram" class="insta-image img-fluid">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer" class="mt-5">
+    <div class="container">
+      <div class="row d-flex flex-wrap justify-content-between py-5">
+        <div class="col-md-3 col-sm-6">
+          <div class="footer-menu footer-menu-001">
+            <div class="footer-intro mb-4">
+              <a href="index.html">
+                <img src="" alt="logo">
+              </a>
+            </div>
+            <p>Gravida massa volutpat aenean odio. Amet, turpis erat nullam fringilla elementum diam in. Nisi, purus
+              vitae, ultrices nunc. Sit ac sit suscipit hendrerit.</p>
+            <div class="social-links">
+              <ul class="list-unstyled d-flex flex-wrap gap-3">
+                <li>
+                  <a href="#" class="text-secondary">
+                      <use xlink:href="#facebook"></use>
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="text-secondary">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                      <use xlink:href="#twitter"></use>
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="text-secondary">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                      <use xlink:href="#youtube"></use>
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="text-secondary">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                      <use xlink:href="#pinterest"></use>
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="text-secondary">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                      <use xlink:href="#instagram"></use>
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="footer-menu footer-menu-002">
+            <h5 class="widget-title text-uppercase mb-4">Tautan Cepat</h5>
+            <ul class="menu-list list-unstyled text-uppercase border-animation-left fs-6">
+              <li class="menu-item">
+                <a href="index.html" class="item-anchor">Beranda</a>
+              </li>
+              <li class="menu-item">
+                <a href="index.html" class="item-anchor">Tentang</a>
+              </li>
+              <li class="menu-item">
+                <a href="blog.html" class="item-anchor">Layanan</a>
+              </li>
+              <li class="menu-item">
+                <a href="styles.html" class="item-anchor">Produk Tunggal</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="item-anchor">Kontak</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="footer-menu footer-menu-003">
+            <h5 class="widget-title text-uppercase mb-4">Bantuan & Info</h5>
+            <ul class="menu-list list-unstyled text-uppercase border-animation-left fs-6">
+              <li class="menu-item">
+                <a href="#" class="item-anchor">Lacak Pesanan Anda</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="item-anchor">Pengembalian + Pertukaran</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="item-anchor">Pengiriman + Pengantaran</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="item-anchor">Hubungi Kami</a>
+              </li>
+              <li class="menu-item">
+                <a href="#" class="item-anchor">Temukan Kami dengan Mudah</a>
+              </li>
+              <li class="menu-item">
+                <a href="index.html" class="item-anchor">FAQ</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="footer-menu footer-menu-004 border-animation-left">
+            <h5 class="widget-title text-uppercase mb-4">Hubungi Kami</h5>
+            <p>Apakah Anda memiliki pertanyaan atau saran? <a href="mailto:contact@yourcompany.com"
+                class="item-anchor">contact@yourcompany.com</a></p>
+            <p>Butuh dukungan? Hubungi kami di <a href="tel:+43 720 11 52 78" class="item-anchor">+43 720 11 52
+                78</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="border-top py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 d-flex flex-wrap">
+            <div class="shipping">
+              <span >Kami mengirim dengan:</span>
+              <img src="images/arct-icon.png" alt="icon">
+              <img src="images/dhl-logo.png" alt="icon">
+            </div>
+            <div class="payment-option">
+              <span>Opsi Pembayaran:</span>
+              <img src="images/visa-card.png" alt="card">
+              <img src="images/paypal-card.png" alt="card">
+              <img src="images/master-card.png" alt="card">
+            </div>
+          </div>
+          <div class="col-md-6 text-end">
+            <p>© Copyright 2022 Efi Songket. Semua hak dilindungi. Desain oleh <a href="https://templatesjungle.com"
+                target="_blank">TemplatesJungle</a> Distribusi oleh <a href="https://themewagon.com"
+                target="blank">ThemeWagon</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/SmoothScroll.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="js/script.min.js"></script>
+</body>
+
+</html>
