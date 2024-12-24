@@ -1,6 +1,7 @@
 <?php
 include 'phpconection.php'; // Menghubungkan ke database
 
+session_start();
 
 if (isset($_GET['proses'])) {
     $proses = $_GET['proses'];
@@ -16,10 +17,20 @@ if (isset($_GET['proses'])) {
         $update_result = mysqli_stmt_execute($stmt);
 
         if ($update_result) {
-            echo "<script>alert('Status transaksi berhasil diubah!'); window.location.href='index.php?p=manage_transactions';</script>";
+            $_SESSION['transaction_message'] = [
+                'type' => 'success',
+                'title' => 'Berhasil!',
+                'text' => 'Status transaksi berhasil diubah!'
+            ];
         } else {
-            echo "<script>alert('Gagal mengubah status transaksi!'); window.location.href='index.php?p=manage_transactions';</script>";
+            $_SESSION['transaction_message'] = [
+                'type' => 'error',
+                'title' => 'Gagal!',
+                'text' => 'Gagal mengubah status transaksi!'
+            ];
         }
+        header('Location: index.php?p=manage_transactions');
+        exit();
     }
 
     // Hapus Transaksi
@@ -35,13 +46,39 @@ if (isset($_GET['proses'])) {
             mysqli_stmt_bind_param($stmt, 'i', $transaction_id);
             $delete_result = mysqli_stmt_execute($stmt);
 
-            echo "<script>alert('Status transaksi berhasil Dihapus!'); window.location.href='index.php?p=manage_transactions';</script>";
+            if ($delete_result) {
+                $_SESSION['transaction_message'] = [
+                    'type' => 'success',
+                    'title' => 'Berhasil!',
+                    'text' => 'Transaksi berhasil dihapus!'
+                ];
+            } else {
+                $_SESSION['transaction_message'] = [
+                    'type' => 'error',
+                    'title' => 'Gagal!',
+                    'text' => 'Gagal menghapus transaksi!'
+                ];
+            }
+        } else {
+            $_SESSION['transaction_message'] = [
+                'type' => 'error',
+                'title' => 'Gagal!',
+                'text' => 'Gagal menghapus item transaksi!'
+            ];
         }
+        header('Location: index.php?p=manage_transactions');
+        exit();
     }
 
     // Jika proses bukan 'edit' atau 'delete'
     else {
-        echo "<script>alert('Proses tidak valid!'); window.location.href='index.php?p=manage_transactions';</script>";
+        $_SESSION['transaction_message'] = [
+            'type' => 'error',
+            'title' => 'Gagal!',
+            'text' => 'Proses tidak valid!'
+        ];
+        header('Location: index.php?p=manage_transactions');
+        exit();
     }
 }
 ?>
