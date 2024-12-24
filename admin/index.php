@@ -264,6 +264,9 @@ if ($result && mysqli_num_rows($result) > 0) {
         case 'reports':
             include 'reports.php';
             break;
+        case 'detail_transaksi':
+            include 'detail_transaksi.php';
+            break;
         default:
             echo "<p class='text-center text-danger'>Halaman tidak ditemukan.</p>";
     }

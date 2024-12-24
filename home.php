@@ -55,7 +55,7 @@ $topProducts = getTopSellingProducts($db);
         height: 100%;
         background: rgba(0, 0, 0, 0.5); /* Optional: to add a dark overlay */
         z-index: 1;
-        filter: blur(2px);
+        
     }
 
     #billboard .container {
@@ -96,32 +96,39 @@ $topProducts = getTopSellingProducts($db);
     </section>
 
     <!-- Bagian Best Seller -->
-    <div class="container y-1" data-aos="fade-up">
-        <h2 class="text-center my-3 mb-6">Best Sellers Efi Songket</h2>
-
-        <div class="row g-4">
-            <?php
-            if (!empty($topProducts)) {
-                foreach ($topProducts as $product) {
-                    ?>
-                    <div class="col-md-3">
-                        <div class="card h-100">
-                            <img src="admin/uploads/<?= !empty($product['image']) ? $product['image'] : 'default.png' ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title"><?= htmlspecialchars($product['name']) ?></h5>
-                                <p class="card-text flex-grow-1">Rp <?= number_format($product['price'], 0, ',', '.') ?></p>
-                                <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="btn btn-primary mt-auto">Lihat Detail</a>
-                            </div>
-                        </div>
-                    </div>
-                    <?php
-                }
-            } else {
-                echo "<p class='text-center'>Tidak ada produk best seller ditemukan.</p>";
-            }
-            ?>
+<div class="container mt-5 mb-5" data-aos="fade-up">
+    <div class="row">
+        <div class="col text-center align-self-center">
+            <h2 class="text-center my-3 mb-6">Best Sellers Efi Songket</h2>
+        </div>
+        <div class="col text-end align-self-center">
+            <a href="index.php?p=toko" class="btn-link">Lihat Semua Produk</a>
         </div>
     </div>
+
+    <div class="row g-4">
+        <?php
+        if (!empty($topProducts)) {
+            foreach ($topProducts as $product) {
+                ?>
+                <div class="col-md-3">
+                    <div class="card h-100 rounded" data-aos="fade-up">
+                        <img src="admin/uploads/<?= !empty($product['image']) ? $product['image'] : 'default.png' ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title"><?= htmlspecialchars($product['name']) ?></h5>
+                            <p class="card-text flex-grow-1">Rp <?= number_format($product['price'], 0, ',', '.') ?></p>
+                            <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="btn btn-primary mt-auto rounded-pill">Lihat Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+        } else {
+            echo "<p class='text-center'>Tidak ada produk best seller ditemukan.</p>";
+        }
+        ?>
+    </div>
+</div>
     <!-- Akhir Best Seller -->
 
     <!-- Akhir Belanja Berdasarkan Kategori -->
@@ -196,7 +203,7 @@ $topProducts = getTopSellingProducts($db);
                 <div class="swiper-wrapper d-flex" id="swiper-wrapper-80c47299e250ea52" aria-live="polite">
                     <?php
                     // Ambil produk dari database
-                    $relatedProductsQuery = "SELECT * FROM products ORDER BY created_at DESC LIMIT 4";
+                    $relatedProductsQuery = "SELECT * FROM products ORDER BY created_at DESC LIMIT 8";
                     $relatedProductsResult = mysqli_query($db, $relatedProductsQuery);
 
                     if ($relatedProductsResult && mysqli_num_rows($relatedProductsResult) > 0) {

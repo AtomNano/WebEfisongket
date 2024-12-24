@@ -2,6 +2,7 @@
 session_start();
 include 'phpconection.php'; // Koneksi ke database
 
+
 // Pastikan form checkout disubmit dengan metode POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Ambil data dari form
@@ -15,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $total_price = $_SESSION['total_price']; // Ambil total harga dari session
     } else {
         // Jika total_price tidak ada atau kosong, tampilkan pesan error
-        echo "<script>alert('Total harga tidak valid!'); window.location.href='index.php?p=checkout';</script>";
+        echo json_encode(['status' => 'error', 'message' => 'Total harga tidak valid!']);
         exit();
     }
 
@@ -104,17 +105,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'created_at' => $created_at
                 ];
             
-                // Arahkan ke halaman detail transaksi dengan ID transaksi yang baru disisipkan
-                header("Location: index.php?p=detail_transaksi&id=" . $transaction_id);
-                exit();
+                // Kirim respons sukses
+                echo json_encode(['status' => 'success', 'message' => 'Checkout berhasil!', 'transaction_id' => $transaction_id]);
             } else {
-                echo "<script>alert('Gagal menyimpan transaksi!');</script>";
+                // Kirim respons error jika gagal menyimpan transaksi
+                echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan transaksi.']);
             }
         } else {
-            echo "<script>alert('Gagal mengunggah bukti pembayaran!');</script>";
+            // Kirim respons error jika gagal mengupload bukti pembayaran
+            echo json_encode(['status' => 'error', 'message' => 'Gagal mengupload bukti pembayaran.']);
         }
     } else {
-        echo "<script>alert('Silakan unggah bukti pembayaran!');</script>";
+        // Kirim respons error jika tidak ada bukti pembayaran yang diupload
+        echo json_encode(['status' => 'error', 'message' => 'Bukti pembayaran tidak valid.']);
     }
+} else {
+    // Kirim respons error jika request method bukan POST
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
 ?>

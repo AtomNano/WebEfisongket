@@ -26,10 +26,60 @@ $transaction = $result->fetch_assoc(); // Ambil hasil transaksi sebagai array
 
 ?>
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Transaksi - Efi Songket</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(120deg, #fdfbfb, #ebedee);
+            font-family: 'Roboto', sans-serif;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .card-footer {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        .badge-warning {
+            background-color: #ffc107;
+        }
+        .badge-success {
+            background-color: #28a745;
+        }
+        .badge-danger {
+            background-color: #dc3545;
+        }
+        .badge-secondary {
+            background-color: #6c757d;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table th {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
 <div class="container mt-5">
     <div class="card shadow-lg rounded">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0 text-center">Detail Transaksi</h4>
+        <div class="card-header text-center">
+            <h4 class="mb-0">Detail Transaksi</h4>
         </div>
         <div class="card-body">
             <!-- Tabel untuk menampilkan detail transaksi -->
@@ -55,19 +105,18 @@ $transaction = $result->fetch_assoc(); // Ambil hasil transaksi sebagai array
                     <td><?php echo htmlspecialchars($transaction['phone']); ?></td>
                 </tr>
                 <tr>
-                <th>Total Pembayaran</th>
-        <td>Rp <?php 
-            // Menghapus format desimal dan hanya menampilkan angka bulat
-            $total = str_replace(['Rp', ''], '', $transaction['total_price']);
-            echo number_format((float)$total, 0, ',', '.'); // Menampilkan tanpa 2 angka desimal
-        ?></td>
-
+                    <th>Total Pembayaran</th>
+                    <td>Rp <?php 
+                        // Menghapus format desimal dan hanya menampilkan angka bulat
+                        $total = str_replace(['Rp', ''], '', $transaction['total_price']);
+                        echo number_format((float)$total, 0, ',', '.'); // Menampilkan tanpa 2 angka desimal
+                    ?></td>
                 </tr>
                 <tr>
                     <th>Bukti Pembayaran</th>
                     <td>
-                        <?php if (!empty($transaction['payment_proof'])): ?>
-                            <img src="<?php echo htmlspecialchars($transaction['payment_proof']); ?>" alt="Bukti Pembayaran" style="max-width: 200px;">
+                    <?php if (!empty($transaction['payment_proof'])): ?>
+                            <img src="http://localhost/WEBEFISONGKET/<?php echo htmlspecialchars($transaction['payment_proof']); ?>" alt="Bukti Pembayaran" style="max-width: 200px;">
                         <?php else: ?>
                             - 
                         <?php endif; ?>
@@ -79,13 +128,13 @@ $transaction = $result->fetch_assoc(); // Ambil hasil transaksi sebagai array
                     <span class="badge 
                         <?php 
                             if ($transaction['status'] == 'Pending') {
-                                echo 'bg-warning'; 
+                                echo 'badge-warning'; 
                             } elseif ($transaction['status'] == 'Completed') {
-                                echo 'bg-success'; 
+                                echo 'badge-success'; 
                             } elseif ($transaction['status'] == 'Cancelled') {
-                                echo 'bg-danger'; 
+                                echo 'badge-danger'; 
                             } else {
-                                echo 'bg-secondary'; // Default for other statuses
+                                echo 'badge-secondary'; // Default for other statuses
                             }
                         ?>">
                         <?php echo htmlspecialchars($transaction['status']); ?>
@@ -133,7 +182,9 @@ $transaction = $result->fetch_assoc(); // Ambil hasil transaksi sebagai array
             </table>
         </div>
         <div class="card-footer text-center">
-            <a href="index.php" class="btn btn-primary">Kembali ke Beranda</a>
+            <a href="index.php?p=manage_transactions" class="btn btn-primary">Kembali ke Beranda</a>
         </div>
     </div>
 </div>
+</body>
+</html>

@@ -62,7 +62,7 @@ if (!$result) {
                                 Hapus
                             </a>
                             <!-- Tombol Lihat Detail -->
-                            <a href="detail_transaksi.php?id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm">
+                            <a href="index.php?p=detail_transaksi&id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm">
                                 Lihat Detail
                             </a>
                         </td>

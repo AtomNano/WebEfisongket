@@ -2,7 +2,6 @@
 session_start();
 include 'phpconection.php';
 
-
 // Cek apakah pengguna sudah login
 if (!isset($_SESSION['user_id'])) {
     // Jika belum login, arahkan ke halaman login
@@ -10,9 +9,14 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    // Simpan transaksi dengan user_id
+$user_id = $_SESSION['user_id'];
+
+// Hitung total jumlah barang dalam keranjang
+$total_items = 0;
+if (isset($_SESSION['cart'][$user_id])) {
+    foreach ($_SESSION['cart'][$user_id] as $item) {
+        $total_items += $item['quantity'];
+    }
 }
 
 // Ensure the request is made via POST method
@@ -23,55 +27,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($action) {
         // Add product to cart
         case 'addToCart':
-            $product_id = $_POST['product_id'];
-            $quantity = $_POST['quantity'];
+            $product_id = isset($_POST['product_id']) ? (int) $_POST['product_id'] : 0;
+            $quantity = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 0;
 
-            // Validate product exists in the database
-            $query = "SELECT * FROM products WHERE id = ?";
-            $stmt = $db->prepare($query);
-            $stmt->bind_param('i', $product_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            if ($product_id > 0 && $quantity > 0) {
+                $query = "SELECT * FROM products WHERE id = ?";
+                $stmt = $db->prepare($query);
+                $stmt->bind_param('i', $product_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-            if ($result->num_rows > 0) {
-                $product = $result->fetch_assoc();
+                if ($result->num_rows > 0) {
+                    $product = $result->fetch_assoc();
 
-                // Insert or update product in cart database
-                $user_id = $_SESSION['user_id'];  // Mengambil user_id dari session
-                $cart_query = "
-                    INSERT INTO cart (user_id, product_id, quantity)
-                    VALUES (?, ?, ?)
-                    ON DUPLICATE KEY UPDATE quantity = quantity + ?
-                ";
-                $cart_stmt = $db->prepare($cart_query);
-                $cart_stmt->bind_param('iiii', $user_id, $product_id, $quantity, $quantity);
-                $cart_stmt->execute();
+                    // Validasi stok
+                    if ($quantity > $product['stock']) {
+                        echo json_encode(['status' => 'error', 'message' => 'Stok tidak mencukupi.']);
+                        exit;
+                    }
 
-                // Add or update the product in session cart
-                if (!isset($_SESSION['cart'])) {
-                    $_SESSION['cart'] = [];
-                }
+                    // Tambahkan atau perbarui di session
+                    if (!isset($_SESSION['cart'][$user_id])) {
+                        $_SESSION['cart'][$user_id] = [];
+                    }
 
-                if (isset($_SESSION['cart'][$product_id])) {
-                    $_SESSION['cart'][$product_id]['quantity'] += $quantity;
+                    if (isset($_SESSION['cart'][$user_id][$product_id])) {
+                        $_SESSION['cart'][$user_id][$product_id]['quantity'] += $quantity;
+                    } else {
+                        $_SESSION['cart'][$user_id][$product_id] = [
+                            'name' => $product['name'],
+                            'price' => $product['price'],
+                            'quantity' => $quantity,
+                            'image' => $product['image']
+                        ];
+                    }
+
+                    // Tambahkan atau perbarui di database
+                    $query = "INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + ?";
+                    $stmt = $db->prepare($query);
+                    $stmt->bind_param('iiii', $user_id, $product_id, $quantity, $quantity);
+                    $stmt->execute();
+
+                    echo json_encode(['status' => 'success', 'message' => 'Produk berhasil ditambahkan ke keranjang!', 'total_items' => $total_items]);
                 } else {
-                    $_SESSION['cart'][$product_id] = [
-                        'name' => $product['name'],
-                        'price' => $product['price'],
-                        'quantity' => $quantity,
-                        'image' => $product['image']
-                    ];
+                    echo json_encode(['status' => 'error', 'message' => 'Produk tidak ditemukan.']);
                 }
-
-                // Calculate total price
-                $total_price = 0;
-                foreach ($_SESSION['cart'] as $item) {
-                    $total_price += $item['price'] * $item['quantity'];
-                }
-
-                echo json_encode(['status' => 'success', 'message' => 'Product added to cart', 'total_price' => $total_price]);
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Product not found']);
+                echo json_encode(['status' => 'error', 'message' => 'Data tidak valid.']);
             }
             break;
 
@@ -80,35 +82,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $product_id = isset($_POST['product_id']) ? (int) $_POST['product_id'] : 0;
             $quantity = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 0;
 
-            if ($quantity > 0 && isset($_SESSION['cart'][$product_id])) {
+            if ($quantity > 0 && $product_id > 0) {
+                $query = "SELECT stock FROM products WHERE id = ?";
+                $stmt = $db->prepare($query);
+                $stmt->bind_param('i', $product_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $product = $result->fetch_assoc();
+
+                if ($quantity > $product['stock']) {
+                    echo json_encode(['status' => 'error', 'message' => 'Stok tidak mencukupi.']);
+                    exit;
+                }
+
                 // Update quantity in session
-                $_SESSION['cart'][$product_id]['quantity'] = $quantity;
+                if (isset($_SESSION['cart'][$user_id][$product_id])) {
+                    $_SESSION['cart'][$user_id][$product_id]['quantity'] = $quantity;
+                }
 
                 // Update quantity in database
-                $user_id = $_SESSION['user_id'];  // Mengambil user_id dari session
-                $update_query = "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
-                $update_stmt = $db->prepare($update_query);
-                $update_stmt->bind_param('iii', $quantity, $user_id, $product_id);
-                $update_stmt->execute();
+                $query = "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
+                $stmt = $db->prepare($query);
+                $stmt->bind_param('iii', $quantity, $user_id, $product_id);
+                $stmt->execute();
 
                 // Calculate total price
                 $total_price = 0;
-                foreach ($_SESSION['cart'] as $item) {
+                foreach ($_SESSION['cart'][$user_id] as $item) {
                     $total_price += $item['price'] * $item['quantity'];
                 }
 
-                // Return updated cart count and total price
-                $cart_count = count($_SESSION['cart']);
-                echo json_encode([
-                    'status' => 'success',
-                    'cartCount' => $cart_count,
-                    'total_price' => $total_price
-                ]);
+                echo json_encode(['status' => 'success', 'message' => 'Kuantitas berhasil diperbarui.', 'total_price' => $total_price]);
             } else {
-                echo json_encode([
-                    'status' => 'error',
-                    'message' => 'Invalid quantity or product not in cart'
-                ]);
+                echo json_encode(['status' => 'error', 'message' => 'Data tidak valid.']);
             }
             break;
 
@@ -117,38 +123,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $product_id = isset($_POST['product_id']) ? (int) $_POST['product_id'] : 0;
 
             if ($product_id > 0) {
-                // Check if the product exists in the cart
-                $user_id = $_SESSION['user_id'];  // Mengambil user_id dari session
-                $check_query = "SELECT * FROM cart WHERE user_id = ? AND product_id = ?";
-                $check_stmt = $db->prepare($check_query);
-                $check_stmt->bind_param('ii', $user_id, $product_id);
-                $check_stmt->execute();
-                $check_result = $check_stmt->get_result();
+                // Remove product from session
+                unset($_SESSION['cart'][$user_id][$product_id]);
 
-                if ($check_result->num_rows > 0) {
-                    // Remove product from session
-                    unset($_SESSION['cart'][$product_id]);
+                // Remove product from database
+                $query = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
+                $stmt = $db->prepare($query);
+                $stmt->bind_param('ii', $user_id, $product_id);
+                $stmt->execute();
 
-                    // Remove product from database
-                    $delete_query = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
-                    $delete_stmt = $db->prepare($delete_query);
-                    $delete_stmt->bind_param('ii', $user_id, $product_id);
-                    if ($delete_stmt->execute()) {
-                        // Calculate total price
-                        $total_price = 0;
-                        foreach ($_SESSION['cart'] as $item) {
-                            $total_price += $item['price'] * $item['quantity'];
-                        }
-
-                        echo json_encode(['status' => 'success', 'message' => 'Product removed from cart', 'total_price' => $total_price]);
-                    } else {
-                        echo json_encode(['status' => 'error', 'message' => 'Failed to remove product from cart']);
-                    }
-                } else {
-                    echo json_encode(['status' => 'error', 'message' => 'Product not found in cart']);
+                // Calculate total price
+                $total_price = 0;
+                foreach ($_SESSION['cart'][$user_id] as $item) {
+                    $total_price += $item['price'] * $item['quantity'];
                 }
+
+                echo json_encode(['status' => 'success', 'message' => 'Produk berhasil dihapus.', 'total_price' => $total_price]);
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Invalid product']);
+                echo json_encode(['status' => 'error', 'message' => 'Produk tidak valid.']);
             }
             break;
 

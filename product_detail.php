@@ -52,6 +52,7 @@ if (isset($_POST['add_to_cart'])) {
     $product = $result->fetch_assoc();
 
     // Cek apakah cart sudah ada untuk user ini
+    // Cek apakah cart sudah ada untuk user ini
     if (!isset($_SESSION['cart'][$user_id])) {
         $_SESSION['cart'][$user_id] = [];
     }
@@ -200,10 +201,12 @@ if (isset($_POST['add_to_cart'])) {
     </div>
 </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.15.3/dist/sweetalert2.all.min.js
+"></script>
+<script>
 $(document).ready(function () {
     // Menangani form Add to Cart
     $('#addToCartForm').on('submit', function (e) {
@@ -214,33 +217,57 @@ $(document).ready(function () {
             type: 'POST',
             data: $(this).serialize() + '&action=addToCart',
             success: function (response) {
-                let result = JSON.parse(response);
-                if (result.status === 'success') {
-                    // Update jumlah produk di keranjang
-                    alert(result.message);
-                    location.reload(); // Refresh page or update the UI
-                    updateCartCount();
-
-                    // Tampilkan notifikasi berhasil
-                    alert(result.message);
-
-                    // Menampilkan sidebar offcanvas otomatis
-                    var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasSidebar'));
-                    offcanvas.show();
-
-                    // Update total price
-                    $('#totalPrice').text('Rp ' + result.total_price.toLocaleString('id-ID'));
-                } else {
-                    alert(result.message);
+                try {
+                    let result = JSON.parse(response);
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+                } catch (e) {
+                    console.error('Kesalahan parsing JSON:', e);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Kesalahan Sistem!',
+                        text: 'Data tidak valid diterima dari server.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    });
                 }
             },
             error: function () {
-                alert('Error menambahkan produk ke keranjang.');
-            },
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat menghubungi server.',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    location.reload();
+                });
+            }
         });
     });
 
-    // Fungsi untuk memperbarui jumlah item di keranjang
+    // Menangani perubahan kuantitas
     $(document).on('change', '.quantity-input', function () {
         const productId = $(this).data('product-id');
         const quantity = $(this).val();
@@ -250,46 +277,105 @@ $(document).ready(function () {
             type: 'POST',
             data: { action: 'updateQuantity', product_id: productId, quantity: quantity },
             success: function (response) {
-                const result = JSON.parse(response);
-                if (result.status === 'success') {
-                    // Update total harga setelah kuantitas diubah
-                    location.reload(); // Refresh halaman untuk menampilkan harga terbaru
-                    $('#totalPrice').text('Rp ' + result.total_price.toLocaleString('id-ID'));
-                } else {
-                    alert(result.message);
+                console.log('Server Response:', response); // Debug log untuk melihat respons server
+
+                try {
+                    const result = JSON.parse(response); // Parsing JSON dari server
+                    console.log('Parsed JSON:', result); // Debug log hasil parsing JSON
+
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error parsing response:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Respons tidak valid dari server.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 }
             },
             error: function () {
-                alert('Terjadi kesalahan saat memperbarui kuantitas.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat menghubungi server.',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         });
     });
 
+    // Fungsi untuk menghapus produk dari keranjang
     $(document).on('click', '.removeFromCart', function () {
         const productId = $(this).data('id');
 
         $.ajax({
             url: 'process_cart.php',
             type: 'POST',
-            data: { action: 'removeFromCart', product_id: productId }, // Pastikan action dikirim dengan benar
+            data: { action: 'removeFromCart', product_id: productId },
             success: function (response) {
-                const result = JSON.parse(response);
-                if (result.status === 'success') {
-                    updateCartCount();
-
-                    // Memuat ulang konten keranjang untuk memperbarui daftar produk yang ada di keranjang
-                    $('#cartItems').load('process_cart.php', { action: 'getCartItems' });
-                    location.reload(); // Refresh halaman untuk menampilkan harga terbaru
-                    $('#totalPrice').text('Rp ' + result.total_price.toLocaleString('id-ID'));
-                } else {
-                    alert(result.message);
+                try {
+                    const result = JSON.parse(response);
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload(); // Refresh halaman setelah penghapusan berhasil
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error parsing response:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Respons tidak valid dari server.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 }
             },
             error: function () {
-                alert('Error menghapus produk.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat menghapus produk.',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         });
     });
 });
-
-    </script>
+</script>

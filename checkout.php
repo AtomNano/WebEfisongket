@@ -76,7 +76,7 @@ $_SESSION['total_price'] = $total_price;
         <!-- Formulir Checkout -->
         <div class="checkout-form">
             <h2>Formulir Checkout</h2>
-            <form action="process_checkout.php" method="POST" enctype="multipart/form-data">
+            <form id="checkoutForm" action="process_checkout.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user_id); ?>">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
@@ -167,6 +167,7 @@ $_SESSION['total_price'] = $total_price;
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     // Menampilkan preview gambar setelah upload
     document.getElementById('payment-proof').addEventListener('change', function(event) {
@@ -186,5 +187,49 @@ $_SESSION['total_price'] = $total_price;
             };
             reader.readAsDataURL(file);
         }
+    });
+
+    // Menangani form checkout
+    document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Mencegah form dikirim secara default
+
+        const formData = new FormData(this);
+
+        fetch('process_checkout.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = 'index.php?p=detail_transaksi&id=' + data.transaction_id;
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Terjadi kesalahan saat memproses checkout.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        });
     });
 </script>
