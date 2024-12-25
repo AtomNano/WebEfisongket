@@ -70,8 +70,8 @@ $_SESSION['total_price'] = $total_price;
     }
 </style>
 
-<div class="container mt-5">
-    <h1 class="text-center">Checkout</h1>
+<div class="container mt-1">
+    <h2 class="text-center">Checkout</h2>
     <div class="checkout-container">
         <!-- Formulir Checkout -->
         <div class="checkout-form">
@@ -104,6 +104,7 @@ $_SESSION['total_price'] = $total_price;
                 <div class="mb-3">
                     <label for="payment-proof" class="form-label">Upload Bukti Pembayaran</label>
                     <input type="file" id="payment-proof" name="payment-proof" class="form-control" required>
+                    <img id="payment-proof-preview" src="#" alt="Preview Bukti Pembayaran" style="display: none; margin-top: 10px; max-width: 300px; max-height: 300px;">
                 </div>
                 <button type="submit" class="btn btn-primary w-100 rounded-pill">Checkout</button>
             </form>
@@ -169,6 +170,20 @@ $_SESSION['total_price'] = $total_price;
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
+document.getElementById('payment-proof').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('payment-proof-preview');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
     // Menampilkan preview gambar setelah upload
     document.getElementById('payment-proof').addEventListener('change', function(event) {
         const file = event.target.files[0];
