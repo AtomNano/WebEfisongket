@@ -194,17 +194,17 @@ $topProducts = getTopSellingProducts($db);
     
     <a href="index.php?p=manage_product" class="sidebar-item d-flex align-items-center <?= $page == 'manage_product' ? 'active' : '' ?>">
         <i class="bi bi-box-seam"></i>
-        <span class="sidebar-text">Manage Products</span>
+        <span class="sidebar-text">Kelola Produk</span>
     </a>
     
     <a href="index.php?p=manage_transactions" class="sidebar-item d-flex align-items-center <?= $page == 'manage_transactions' ? 'active' : '' ?>">
         <i class="bi bi-cash-stack"></i>
-        <span class="sidebar-text">Manage Transactions</span>
+        <span class="sidebar-text">Kelola Transaksi</span>
     </a>
     
     <a href="index.php?p=reports" class="sidebar-item d-flex align-items-center <?= $page == 'reports' ? 'active' : '' ?>">
         <i class="bi bi-graph-up-arrow"></i>
-        <span class="sidebar-text">Reports</span>
+        <span class="sidebar-text">Laporan</span>
     </a>
     
     <a href="../index.php" class="sidebar-item d-flex align-items-center">
