@@ -3,20 +3,19 @@
 include 'phpconection.php'; // Pastikan koneksi ke database sudah benar di file ini
 include 'functions.php'; // Sertakan file functions.php
 
-// Ambil transaksi bulan ini
-$month = isset($_GET['month']) ? $_GET['month'] : date('m');
-$year = isset($_GET['year']) ? $_GET['year'] : date('Y');
+// Ambil tanggal mulai dan akhir dari parameter GET
+$startDate = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
+$endDate = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-t');
 
 // Ambil data transaksi bulanan
-$monthlyTransactions = getMonthlyTransactions($month, $year, $db);
+$monthlyTransactions = getMonthlyTransactionsByDateRange($startDate, $endDate, $db);
 
-// Periode laporan per produk
-$startDate = '2024-01-01'; // Sesuaikan
-$endDate = '2024-12-31';   // Sesuaikan
-
-// Ambil data laporan
+// Ambil data laporan per produk
 $productReport = getTransactionReport($db, $startDate, $endDate);
 $topProducts = getTopSellingProducts($db);
+
+// Ambil data penjualan bulanan
+$salesData = getMonthlySalesDataByDateRange($startDate, $endDate, $db);
 ?>
 
 <!DOCTYPE html>
@@ -34,14 +33,50 @@ $topProducts = getTopSellingProducts($db);
 <div class="container mt-5">
     <h1 class="text-center mb-4">Laporan Transaksi</h1> 
 
-    <!-- Monthly Transactions Section -->
+    <!-- Filter Form -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
-            <h5 class="card-title text-center mb-4">Transaksi Bulanan</h5>
+            <form method="GET" action="reports.php" class="row">
+                <div class="col-md-4">
+                    <label for="start_date" class="form-label">Tanggal Mulai</label>
+                    <input type="date" name="start_date" id="start_date" class="form-control" value="<?= $startDate ?>">
+                </div>
+                <div class="col-md-4">
+                    <label for="end_date" class="form-label">Tanggal Akhir</label>
+                    <input type="date" name="end_date" id="end_date" class="form-control" value="<?= $endDate ?>">
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Tampilkan Laporan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Monthly Sales Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-4">Penjualan Bulanan</h5>
+            <div class="row align-items-center">
+                <!-- Chart for Total Products Sold -->
+                <div class="col-md-6">
+                    <canvas id="totalProductsSoldChart" style="max-height: 300px;"></canvas>
+                </div>
+                <!-- Chart for Total Revenue -->
+                <div class="col-md-6">
+                    <canvas id="totalRevenueChart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Status Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-4">Status Konfirmasi</h5>
             <div class="row align-items-center">
                 <!-- Chart -->
                 <div class="col-md-6">
-                    <canvas id="monthlyTransactionsChart" style="max-height: 300px;"></canvas>
+                    <canvas id="confirmationStatusChart" style="max-height: 300px;"></canvas>
                 </div>
                 <!-- Table -->
                 <div class="col-md-6">
@@ -79,51 +114,88 @@ $topProducts = getTopSellingProducts($db);
                 </div>
             </div>
         </div>
-        <!-- Filter Form Below Table and Chart -->
-<div class="card-footer">
-    <form method="GET" action="reports.php" class="row">
-        <div class="col-md-4">
-            <label for="month" class="form-label">Pilih Bulan</label>
-            <select name="month" id="month" class="form-select">
-                <?php for ($i = 1; $i <= 12; $i++): ?>
-                    <option value="<?= $i ?>" <?= $month == $i ? 'selected' : '' ?>>
-                        <?= date("F", mktime(0, 0, 0, $i, 10)) ?>
-                    </option>
-                <?php endfor; ?>
-            </select>
+    </div>
+
+    <!-- Report Per Item Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-4">Laporan Per Item</h5>
+            <table class="table table-bordered table-sm">
+                <thead class="table-info">
+                <tr>
+                    <th>ID Produk</th>
+                    <th>Nama Produk</th>
+                    <th>Total Terjual</th>
+                    <th>Total Pendapatan</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($productReport as $product): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($product['product_id']) ?></td>
+                        <td><?= htmlspecialchars($product['product_name']) ?></td>
+                        <td><?= $product['total_quantity'] ?></td>
+                        <td>Rp <?= number_format($product['total_revenue'], 0, ',', '.') ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
-        <div class="col-md-4">
-            <label for="year" class="form-label">Pilih Tahun</label>
-            <select name="year" id="year" class="form-select">
-                <option value="2024" <?= $year == 2024 ? 'selected' : '' ?>>2024</option>
-                <option value="2023" <?= $year == 2023 ? 'selected' : '' ?>>2023</option>
-                <option value="2022" <?= $year == 2022 ? 'selected' : '' ?>>2022</option>
-            </select>
+    </div>
+
+    <!-- Top Selling Products Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-4">Produk Terlaris</h5>
+            <div class="row">
+                <!-- Chart -->
+                <div class="col-md-6">
+                    <div style="max-width: 400px; margin: 0 auto;">
+                        <canvas id="topSellingProductsChart" style="max-height: 250px;"></canvas>
+                    </div>
+                </div>
+                <!-- Table -->
+                <div class="col-md-6">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-warning text-center">
+                            <tr>
+                                <th>Nama Produk</th>
+                                <th>Total Terjual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($topProducts as $product): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($product['product_name']) ?></td>
+                                    <td class="text-center"><?= number_format($product['total_sold'], 0, ',', '.') ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary w-100">Tampilkan Laporan</button>
-        </div>
-    </form>
-</div>
     </div>
 </div>
 
 <script>
-// Monthly Transactions Chart
-const monthlyTransactionsData = <?php echo json_encode($monthlyTransactions); ?>;
-const labels = monthlyTransactionsData.map(transaction => transaction.status);
-const totalTransactions = monthlyTransactionsData.map(transaction => transaction.total_transactions);
+// Monthly Sales Data
+const salesData = <?php echo json_encode($salesData); ?>;
+const salesLabels = salesData.map(data => data.month);
+const salesQuantities = salesData.map(data => data.total_quantity);
+const salesRevenues = salesData.map(data => data.total_revenue);
 
-const ctxMonthly = document.getElementById('monthlyTransactionsChart').getContext('2d');
-new Chart(ctxMonthly, {
+// Total Products Sold Chart
+const ctxTotalProductsSold = document.getElementById('totalProductsSoldChart').getContext('2d');
+new Chart(ctxTotalProductsSold, {
     type: 'bar',
     data: {
-        labels: labels,
+        labels: salesLabels,
         datasets: [{
-            label: 'Total Transaksi',
-            data: totalTransactions,
-            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            borderColor: 'rgba(54, 162, 235, 1)',
+            label: 'Total Produk Terjual',
+            data: salesQuantities,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1
         }]
     },
@@ -136,70 +208,71 @@ new Chart(ctxMonthly, {
         }
     }
 });
-</script>
 
-<!-- Report Per Item Section -->
-<div class="card mb-4 shadow-sm">
-    <div class="card-body">
-        <h5 class="card-title text-center mb-4">Laporan Per Item</h5>
-        <table class="table table-bordered table-sm">
-            <thead class="table-info">
-            <tr>
-                <th>ID Produk</th>
-                <th>Nama Produk</th>
-                <th>Total Terjual</th>
-                <th>Total Pendapatan</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach ($productReport as $product): ?>
-                <tr>
-                    <td><?= htmlspecialchars($product['product_id']) ?></td>
-                    <td><?= htmlspecialchars($product['product_name']) ?></td>
-                    <td><?= $product['total_quantity'] ?></td>
-                    <td>Rp <?= number_format($product['total_revenue'], 0, ',', '.') ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
+// Total Revenue Chart
+const ctxTotalRevenue = document.getElementById('totalRevenueChart').getContext('2d');
+new Chart(ctxTotalRevenue, {
+    type: 'bar',
+    data: {
+        labels: salesLabels,
+        datasets: [{
+            label: 'Total Pendapatan',
+            data: salesRevenues,
+            backgroundColor: 'rgba(153, 102, 255, 0.6)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            }
+        }
+    }
+});
 
-<!-- Top Selling Products Section -->
-<div class="card mb-4 shadow-sm">
-    <div class="card-body">
-        <h5 class="card-title text-center mb-4">Produk Terlaris</h5>
-        <div class="row">
-            <!-- Chart -->
-            <div class="col-md-6">
-                <div style="max-width: 400px; margin: 0 auto;">
-                    <canvas id="topSellingProductsChart" style="max-height: 250px;"></canvas>
-                </div>
-            </div>
-            <!-- Table -->
-            <div class="col-md-6">
-                <table class="table table-bordered table-striped">
-                    <thead class="table-warning text-center">
-                        <tr>
-                            <th>Nama Produk</th>
-                            <th>Total Terjual</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($topProducts as $product): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($product['product_name']) ?></td>
-                                <td class="text-center"><?= number_format($product['total_sold'], 0, ',', '.') ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+// Confirmation Status Chart
+const monthlyTransactionsData = <?php echo json_encode($monthlyTransactions); ?>;
+const confirmationLabels = monthlyTransactionsData.map(transaction => transaction.status);
+const totalTransactions = monthlyTransactionsData.map(transaction => transaction.total_transactions);
 
-<script>
+const ctxConfirmation = document.getElementById('confirmationStatusChart').getContext('2d');
+new Chart(ctxConfirmation, {
+    type: 'pie',
+    data: {
+        labels: confirmationLabels,
+        datasets: [{
+            data: totalTransactions,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(255, 159, 64, 0.6)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'right',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${tooltipItem.label}: ${tooltipItem.raw.toLocaleString()} pcs`;
+                    }
+                }
+            }
+        }
+    }
+});
+
 // Top Selling Products Chart
 const topProductsData = <?php echo json_encode($topProducts); ?>;
 const productLabels = topProductsData.map(product => product['product_name']);

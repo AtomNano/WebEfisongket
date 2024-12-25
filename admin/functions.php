@@ -95,4 +95,62 @@ if (!function_exists('getTransactionReport')) {
         return $data; // Mengembalikan array yang sudah diurutkan
     }
 }
+
+if (!function_exists('getMonthlySalesDataByDateRange')) {
+    function getMonthlySalesDataByDateRange($startDate, $endDate, $db) {
+        $query = "
+            SELECT 
+                DATE_FORMAT(t.created_at, '%Y-%m') AS month,
+                SUM(oi.quantity) AS total_quantity,
+                SUM(oi.quantity * oi.price) AS total_revenue
+            FROM transactions t
+            JOIN order_item oi ON t.id = oi.transaction_id
+            WHERE t.created_at BETWEEN '$startDate' AND '$endDate'
+            GROUP BY DATE_FORMAT(t.created_at, '%Y-%m')
+            ORDER BY DATE_FORMAT(t.created_at, '%Y-%m')
+        ";
+
+        $result = mysqli_query($db, $query);
+
+        if (!$result) {
+            die("Query gagal: " . mysqli_error($db));
+        }
+
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+}
+
+if (!function_exists('getMonthlyTransactionsByDateRange')) {
+    function getMonthlyTransactionsByDateRange($startDate, $endDate, $db) {
+        $query = "
+            SELECT 
+                t.status AS status,
+                COUNT(t.id) AS total_transactions,
+                SUM(t.total_price) AS total_revenue,
+                SUM(oi.quantity) AS total_products_sold
+            FROM transactions t
+            JOIN order_item oi ON t.id = oi.transaction_id
+            WHERE t.created_at BETWEEN '$startDate' AND '$endDate'
+            GROUP BY t.status
+        ";
+
+        $result = mysqli_query($db, $query);
+
+        if (!$result) {
+            die("Query gagal: " . mysqli_error($db));
+        }
+
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+}
 ?>
