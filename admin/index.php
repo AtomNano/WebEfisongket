@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'phpconection.php'; // Menghubungkan ke database
+include 'functions.php'; // Sertakan file functions.php
 
 // Periksa koneksi database
 if (!$db) {
@@ -11,13 +12,9 @@ if (!$db) {
 $result_products = mysqli_query($db, "SELECT COUNT(*) AS total FROM products");
 $total_products = ($result_products && mysqli_num_rows($result_products) > 0) ? mysqli_fetch_assoc($result_products)['total'] : 0;
 
- //Ambil data jumlah transaksi untuk dashboard
- $result_transactions = mysqli_query($db, "SELECT COUNT(*) AS total FROM transactions");
- $total_transactions = ($result_transactions && mysqli_num_rows($result_transactions) > 0) ? mysqli_fetch_assoc($result_transactions)['total'] : 0;
-
- // Pastikan include 'functions.php' ada di atas
-include 'functions.php';
-
+// Ambil data jumlah transaksi untuk dashboard
+$result_transactions = mysqli_query($db, "SELECT COUNT(*) AS total FROM transactions");
+$total_transactions = ($result_transactions && mysqli_num_rows($result_transactions) > 0) ? mysqli_fetch_assoc($result_transactions)['total'] : 0;
 
 // Ambil bulan dan tahun saat ini
 $month = date('m');
@@ -34,8 +31,12 @@ if ($result && mysqli_num_rows($result) > 0) {
     $monthly_revenue = $row['total_revenue'];
 }
 
-?>
+// Ambil data transaksi bulanan
+$monthlyTransactions = getMonthlyTransactions($month, $year, $db);
 
+// Ambil data produk terlaris
+$topProducts = getTopSellingProducts($db);
+?>
 
 <!DOCTYPE html>
 <html lang="id">
@@ -45,6 +46,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     <title>Dashboard Admin - Efi Songket</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
         
@@ -238,21 +240,107 @@ if ($result && mysqli_num_rows($result) > 0) {
                     </div>
                 </div>
                 <div class="col-md-4">
-    <div class="card p-4 text-center bg-revenue">
-        <i class="bi bi-graph-up-arrow card-icon"></i>
-        <h5 class="card-title">Pendapatan Bulanan</h5>
-        <p class="card-text">
-            <?php 
-            if (isset($monthly_revenue) && is_numeric($monthly_revenue)) {
-                echo 'Rp ' . number_format($monthly_revenue, 0, ',', '.');
-            } else {
-                echo 'Data tidak tersedia';
-            }
-            ?>
-        </p>
-    </div>
-</div>
+                    <div class="card p-4 text-center bg-revenue">
+                        <i class="bi bi-graph-up-arrow card-icon"></i>
+                        <h5 class="card-title">Pendapatan Bulanan</h5>
+                        <p class="card-text">
+                            <?php 
+                            if (isset($monthly_revenue) && is_numeric($monthly_revenue)) {
+                                echo 'Rp ' . number_format($monthly_revenue, 0, ',', '.');
+                            } else {
+                                echo 'Data tidak tersedia';
+                            }
+                            ?>
+                        </p>
+                    </div>
+                </div>
             </div>
+
+            <!-- Charts Section -->
+            <div class="row g-4 mt-4">
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <h5 class="card-title text-center">Transaksi Bulanan</h5>
+                        <canvas id="monthlyTransactionsChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <h5 class="card-title text-center">Produk Terlaris</h5>
+                        <canvas id="topSellingProductsChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+            // Monthly Transactions Chart
+            const monthlyTransactionsData = <?php echo json_encode($monthlyTransactions); ?>;
+            const labels = monthlyTransactionsData.map(transaction => transaction.status);
+            const totalTransactions = monthlyTransactionsData.map(transaction => transaction.total_transactions);
+
+            const ctxMonthly = document.getElementById('monthlyTransactionsChart').getContext('2d');
+            new Chart(ctxMonthly, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Transaksi',
+                        data: totalTransactions,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+
+            // Top Selling Products Chart
+            const topProductsData = <?php echo json_encode($topProducts); ?>;
+            const productLabels = topProductsData.map(product => product['product_name']);
+            const productSales = topProductsData.map(product => product['total_sold']);
+
+            const ctxTopProducts = document.getElementById('topSellingProductsChart').getContext('2d');
+            new Chart(ctxTopProducts, {
+                type: 'pie',
+                data: {
+                    labels: productLabels,
+                    datasets: [{
+                        data: productSales,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw.toLocaleString()} pcs`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            </script>
             <?php
             break;
         case 'manage_product':
