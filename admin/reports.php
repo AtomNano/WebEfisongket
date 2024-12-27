@@ -27,14 +27,57 @@ $salesData = getMonthlySalesDataByDateRange($startDate, $endDate, $db);
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="dashboard.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+            .print-container {
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+            .print-container h1, .print-container h5 {
+                text-align: center;
+            }
+            .print-container table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .print-container table, .print-container th, .print-container td {
+                border: 1px solid black;
+            }
+            .print-container th, .print-container td {
+                padding: 8px;
+                text-align: left;
+            }
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            padding: 12px 15px;
+            background: #fff;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background-color: #f8f9fa;
+            color: #333;
+            font-weight: bold;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt-5 print-container">
     <h1 class="text-center mb-4">Laporan Transaksi</h1> 
 
     <!-- Filter Form -->
-    <div class="card mb-4 shadow-sm">
+    <div class="card mb-4 shadow-sm no-print">
         <div class="card-body">
             <form method="GET" action="reports.php" class="row">
                 <div class="col-md-4">
@@ -50,6 +93,12 @@ $salesData = getMonthlySalesDataByDateRange($startDate, $endDate, $db);
                 </div>
             </form>
         </div>
+    </div>
+
+    <div class="text-end mb-4 no-print">
+    <a href="print_report.php?start_date=<?= $startDate ?>&end_date=<?= $endDate ?>" class="btn btn-success" target="_blank">
+        <i class="bi bi-printer"></i> Cetak Laporan
+    </a>
     </div>
 
     <!-- Monthly Sales Section -->

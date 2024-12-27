@@ -96,6 +96,16 @@ $max_price = $_GET['max_price'] ?? 10000000;
 
 
 <style>
+    
+    .offcanvas-backdrop {
+        background-color: rgba(0, 0, 0, 0.1) !important; /* Kurangi efek hitam */
+    }
+
+    .offcanvas {
+        background-color: #f9f9f9; /* Sesuaikan dengan warna latar belakang yang diinginkan */
+        border-radius: 10px;
+    }
+        
         .sidebar {
             background: #fff;
             border-radius: 5px;
@@ -114,16 +124,19 @@ $max_price = $_GET['max_price'] ?? 10000000;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .product-item:hover {
         transform: translateY(-10px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
+        
         .product-image {
         width: 100%;
         height: 300px;
         object-fit: cover;
         border-radius: 8px;
         transition: transform 0.3s ease;
+        
     }
 
     .product-image:hover {
@@ -146,10 +159,20 @@ $max_price = $_GET['max_price'] ?? 10000000;
         border-top: 1px solid #ddd;
         padding: 15px;
         border-radius: 0 0 8px 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        
+        
     }
 
     .product-content h5 {
         color: #333;
+        min-height: 50px; /* Tetapkan tinggi minimum untuk nama produk */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 
     .product-content a {
@@ -228,8 +251,8 @@ $max_price = $_GET['max_price'] ?? 10000000;
                 <div class="row g-4">
                     <?php if (mysqli_num_rows($result) > 0): ?>
                         <?php while ($product = mysqli_fetch_assoc($result)): ?>
-                            <div class="col-12 col-sm-6 col-md-3 mb-4">
-                                <div class="product-item image-zoom-effect link-effect bg-white rounded shadow-sm">
+                            <div class="col-12 col-sm-6 col-md-3 mb-4 d-flex align-items-stretch">
+                                <div class="product-item image-zoom-effect link-effect bg-white rounded shadow-sm w-100">
                                     <div class="image-holder position-relative">
                                         <!-- Link ke halaman detail produk -->
                                         <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="stretched-link">
@@ -241,9 +264,9 @@ $max_price = $_GET['max_price'] ?? 10000000;
                                             <i class="bi bi-heart"></i>
                                         </a>
                                     </div>
-                                    <div class="product-content p-3 text-center">
+                                    <div class="product-content p-3 text-center d-flex flex-column">
                                         <!-- Product Name -->
-                                        <h5 class="text-uppercase fs-5 mt-3">
+                                        <h5 class="text-uppercase fs-5 mt-3 flex-grow-1 d-flex align-items-center justify-content-center">
                                             <?= htmlspecialchars($product['name']) ?>
                                         </h5>
                                         <!-- Product Price -->

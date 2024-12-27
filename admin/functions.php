@@ -125,6 +125,34 @@ if (!function_exists('getMonthlySalesDataByDateRange')) {
     }
 }
 
+if (!function_exists('getConfirmationStatus')) {
+    function getConfirmationStatus($db, $startDate, $endDate) {
+        $query = "
+            SELECT 
+                status,
+                COUNT(*) AS total_transactions,
+                SUM(total_price) AS total_revenue,
+                SUM(oi.quantity) AS total_products_sold
+            FROM transactions t
+            JOIN order_item oi ON t.id = oi.transaction_id
+            WHERE t.created_at BETWEEN '$startDate' AND '$endDate'
+            GROUP BY status
+        ";
+        $result = mysqli_query($db, $query);
+
+        if (!$result) {
+            die("Query gagal: " . mysqli_error($db));
+        }
+
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+}
+
 if (!function_exists('getMonthlyTransactionsByDateRange')) {
     function getMonthlyTransactionsByDateRange($startDate, $endDate, $db) {
         $query = "

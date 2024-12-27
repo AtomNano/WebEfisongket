@@ -7,6 +7,27 @@ if (isset($_GET['proses'])) {
     $proses = $_GET['proses'];
     $transaction_id = $_GET['id'];
 
+    // Edit Status Pengiriman
+    if ($proses == 'update_shipping_status') {
+        $status = $_GET['status'];
+        $query = "UPDATE transactions SET shipping_status = '$status' WHERE id = $transaction_id";
+        if (mysqli_query($db, $query)) {
+            $_SESSION['transaction_message'] = [
+                'type' => 'success',
+                'title' => 'Berhasil!',
+                'text' => 'Status pengiriman berhasil diubah.'
+            ];
+        } else {
+            $_SESSION['transaction_message'] = [
+                'type' => 'error',
+                'title' => 'Gagal!',
+                'text' => 'Status pengiriman gagal diubah.'
+            ];
+        }
+        header('Location: index.php?p=manage_transactions');
+        exit;
+    }
+
     // Edit Status Transaksi
     if ($proses == 'edit') {
         $status = 'Confirmed';  // Status yang akan diubah, misalnya 'Confirmed'
@@ -26,59 +47,31 @@ if (isset($_GET['proses'])) {
             $_SESSION['transaction_message'] = [
                 'type' => 'error',
                 'title' => 'Gagal!',
-                'text' => 'Gagal mengubah status transaksi!'
+                'text' => 'Status transaksi gagal diubah.'
             ];
         }
         header('Location: index.php?p=manage_transactions');
-        exit();
+        exit;
     }
 
-    // Hapus Transaksi
-    elseif ($proses == 'delete') {
-        $delete_order_item_query = "DELETE FROM order_item WHERE transaction_id = ?";
-        $stmt_order_item = mysqli_prepare($db, $delete_order_item_query);
-        mysqli_stmt_bind_param($stmt_order_item, 'i', $transaction_id);
-        $delete_order_item_result = mysqli_stmt_execute($stmt_order_item);
-
-        if ($delete_order_item_result) {
-            $delete_query = "DELETE FROM transactions WHERE id = ?";
-            $stmt = mysqli_prepare($db, $delete_query);
-            mysqli_stmt_bind_param($stmt, 'i', $transaction_id);
-            $delete_result = mysqli_stmt_execute($stmt);
-
-            if ($delete_result) {
-                $_SESSION['transaction_message'] = [
-                    'type' => 'success',
-                    'title' => 'Berhasil!',
-                    'text' => 'Transaksi berhasil dihapus!'
-                ];
-            } else {
-                $_SESSION['transaction_message'] = [
-                    'type' => 'error',
-                    'title' => 'Gagal!',
-                    'text' => 'Gagal menghapus transaksi!'
-                ];
-            }
+    // Hapus Transaksi (tandai sebagai dihapus)
+    if ($proses == 'delete') {
+        $query = "UPDATE transactions SET deleted = 1 WHERE id = $transaction_id";
+        if (mysqli_query($db, $query)) {
+            $_SESSION['transaction_message'] = [
+                'type' => 'success',
+                'title' => 'Berhasil!',
+                'text' => 'Transaksi berhasil dihapus sementara.'
+            ];
         } else {
             $_SESSION['transaction_message'] = [
                 'type' => 'error',
                 'title' => 'Gagal!',
-                'text' => 'Gagal menghapus item transaksi!'
+                'text' => 'Transaksi gagal dihapus.'
             ];
         }
         header('Location: index.php?p=manage_transactions');
-        exit();
-    }
-
-    // Jika proses bukan 'edit' atau 'delete'
-    else {
-        $_SESSION['transaction_message'] = [
-            'type' => 'error',
-            'title' => 'Gagal!',
-            'text' => 'Proses tidak valid!'
-        ];
-        header('Location: index.php?p=manage_transactions');
-        exit();
+        exit;
     }
 }
 ?>
