@@ -31,11 +31,24 @@ if ($result && mysqli_num_rows($result) > 0) {
     $monthly_revenue = $row['total_revenue'];
 }
 
+// Tentukan nilai default untuk $startDate dan $endDate
+$startDate = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
+$endDate = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-t');
+
 // Ambil data transaksi bulanan
-$monthlyTransactions = getMonthlyTransactions($month, $year, $db);
+$monthlyTransactions = getMonthlyTransactionsByDateRange($startDate, $endDate, $db);
 
 // Ambil data produk terlaris
 $topProducts = getTopSellingProducts($db);
+
+// Ambil data laporan per produk
+$productReport = getTransactionReport($db, $startDate, $endDate);
+
+// Ambil data penjualan bulanan
+$salesData = getMonthlySalesDataByDateRange($startDate, $endDate, $db);
+
+// Ambil data status konfirmasi
+$confirmationStatus = getConfirmationStatus($db, $startDate, $endDate);
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +60,7 @@ $topProducts = getTopSellingProducts($db);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
         
@@ -273,75 +286,261 @@ $topProducts = getTopSellingProducts($db);
                 </div>
             </div>
 
+            <!-- Additional Charts Section from reports.php -->
+            <div class="row g-4 mt-4">
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <h5 class="card-title text-center">Penjualan Bulanan</h5>
+                        <canvas id="totalProductsSoldChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <h5 class="card-title text-center">Total Pendapatan</h5>
+                        <canvas id="totalRevenueChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-4">
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <h5 class="card-title text-center">Status Konfirmasi</h5>
+                        <canvas id="confirmationStatusChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <h5 class="card-title text-center">Laporan Per Item</h5>
+                        <canvas id="productReportChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
             <script>
-            // Monthly Transactions Chart
-            const monthlyTransactionsData = <?php echo json_encode($monthlyTransactions); ?>;
-            const labels = monthlyTransactionsData.map(transaction => transaction.status);
-            const totalTransactions = monthlyTransactionsData.map(transaction => transaction.total_transactions);
 
-            const ctxMonthly = document.getElementById('monthlyTransactionsChart').getContext('2d');
-            new Chart(ctxMonthly, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total Transaksi',
-                        data: totalTransactions,
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
+
+// Monthly Transactions Chart
+const monthlyData = <?php echo json_encode($monthlyTransactions); ?>;
+    const monthlyLabels = monthlyData.map(data => data.status);
+    const monthlyValues = monthlyData.map(data => data.total_transactions);
+
+    const ctxMonthly = document.getElementById('monthlyTransactionsChart').getContext('2d');
+    new Chart(ctxMonthly, {
+        type: 'bar',
+        data: {
+            labels: monthlyLabels,
+            datasets: [{
+                label: 'Jumlah Transaksi',
+                data: monthlyValues,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+
+    // Monthly Sales Data
+    const salesData = <?php echo json_encode($salesData); ?>;
+    const salesLabels = salesData.map(data => data.month);
+    const salesQuantities = salesData.map(data => data.total_quantity);
+    const salesRevenues = salesData.map(data => data.total_revenue);
+
+    // Total Products Sold Chart
+    const ctxTotalProductsSold = document.getElementById('totalProductsSoldChart').getContext('2d');
+    new Chart(ctxTotalProductsSold, {
+        type: 'bar',
+        data: {
+            labels: salesLabels,
+            datasets: [{
+                label: 'Total Produk Terjual',
+                data: salesQuantities,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+
+    // Total Revenue Chart
+    const ctxTotalRevenue = document.getElementById('totalRevenueChart').getContext('2d');
+    new Chart(ctxTotalRevenue, {
+        type: 'bar',
+        data: {
+            labels: salesLabels,
+            datasets: [{
+                label: 'Total Pendapatan',
+                data: salesRevenues,
+                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+
+    // Confirmation Status Chart
+    const monthlyTransactionsData = <?php echo json_encode($monthlyTransactions); ?>;
+    const confirmationLabels = monthlyTransactionsData.map(transaction => transaction.status);
+    const totalTransactions = monthlyTransactionsData.map(transaction => transaction.total_transactions);
+
+    const ctxConfirmation = document.getElementById('confirmationStatusChart').getContext('2d');
+    new Chart(ctxConfirmation, {
+        type: 'pie',
+        data: {
+            labels: confirmationLabels,
+            datasets: [{
+                data: totalTransactions,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `${tooltipItem.label}: ${tooltipItem.raw.toLocaleString()} pcs`;
                         }
                     }
                 }
-            });
+            }
+        }
+    });
 
-            // Top Selling Products Chart
-            const topProductsData = <?php echo json_encode($topProducts); ?>;
-            const productLabels = topProductsData.map(product => product['product_name']);
-            const productSales = topProductsData.map(product => product['total_sold']);
+    // Product Report Chart
+    const productReportData = <?php echo json_encode($productReport); ?>;
+    const productLabels = productReportData.map(product => product['product_name']);
+    const productQuantities = productReportData.map(product => product['total_quantity']);
+    const productRevenues = productReportData.map(product => (product['total_revenue'] / 1000000).toFixed(2)); // Konversi ke juta
 
-            const ctxTopProducts = document.getElementById('topSellingProductsChart').getContext('2d');
-            new Chart(ctxTopProducts, {
-                type: 'pie',
-                data: {
-                    labels: productLabels,
-                    datasets: [{
-                        data: productSales,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(255, 159, 64, 0.6)'
-                        ],
-                        borderWidth: 1
-                    }]
+    const ctxProductReport = document.getElementById('productReportChart').getContext('2d');
+    new Chart(ctxProductReport, {
+        type: 'bar',
+        data: {
+            labels: productLabels,
+            datasets: [
+                {
+                    label: 'Total Terjual',
+                    data: productQuantities,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return `${tooltipItem.label}: ${tooltipItem.raw.toLocaleString()} pcs`;
-                                }
-                            }
+                {
+                    label: 'Total Pendapatan (dalam juta)',
+                    data: productRevenues,
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 50, // Set maximum value to 50 juta
+                    ticks: {
+                        stepSize: 1, // Set step size to 1 juta
+                        callback: function(value) {
+                            return value + ' juta';
                         }
                     }
                 }
-            });
-            </script>
+            }
+        }
+    });
+
+    // Top Selling Products Chart
+    const topProductsData = <?php echo json_encode($topProducts); ?>;
+    const topProductLabels = topProductsData.map(product => product['product_name']);
+    const topProductSales = topProductsData.map(product => product['total_sold']);
+
+    const ctxTopProducts = document.getElementById('topSellingProductsChart').getContext('2d');
+    new Chart(ctxTopProducts, {
+        type: 'pie',
+        data: {
+            labels: topProductLabels,
+            datasets: [{
+                data: topProductSales,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `${tooltipItem.label}: ${tooltipItem.raw.toLocaleString()} pcs`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
             <?php
             break;
         case 'manage_product':
@@ -366,7 +565,7 @@ $topProducts = getTopSellingProducts($db);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 </body>
 </html>

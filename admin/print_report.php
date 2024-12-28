@@ -1,7 +1,10 @@
 <?php
-require('library/fpdf.php');
+require '../vendor/autoload.php';
 include 'phpconection.php';
 include 'functions.php';
+
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 // Ambil tanggal mulai dan akhir dari parameter GET
 $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
@@ -20,150 +23,119 @@ $salesData = getMonthlySalesDataByDateRange($startDate, $endDate, $db);
 // Ambil data status konfirmasi
 $confirmationStatus = getConfirmationStatus($db, $startDate, $endDate);
 
-class PDF extends FPDF
-{
-    // Page header
-    function Header()
-    {
-        $this->SetFont('Arial', 'B', 12);
-        $this->Cell(0, 10, 'Laporan Transaksi', 0, 1, 'C');
-        $this->Ln(10);
-    }
+// Inisialisasi Dompdf
+$options = new Options();
+$options->set('isHtml5ParserEnabled', true);
+$options->set('isRemoteEnabled', true);
+$dompdf = new Dompdf($options);
 
-    // Page footer
-    function Footer()
-    {
-        $this->SetY(-15);
-        $this->SetFont('Arial', 'I', 8);
-        $this->Cell(0, 10, 'Halaman ' . $this->PageNo(), 0, 0, 'C');
-    }
-
-    // Monthly Transactions Table
-    function MonthlyTransactionsTable($header, $data)
-    {
-        $this->SetFont('Arial', 'B', 12);
-        foreach ($header as $col) {
-            $this->Cell(60, 7, $col, 1);
-        }
-        $this->Ln();
-        $this->SetFont('Arial', '', 12);
-        if (!empty($data)) {
-            foreach ($data as $row) {
-                $this->Cell(60, 6, isset($row['month']) ? $row['month'] : '', 1);
-                $this->Cell(60, 6, isset($row['total_quantity']) ? $row['total_quantity'] : '', 1);
-                $this->Cell(60, 6, isset($row['total_revenue']) ? 'Rp ' . number_format($row['total_revenue'], 0, ',', '.') : '', 1);
-                $this->Ln();
-            }
-        } else {
-            $this->Cell(180, 6, 'Tidak ada data', 1, 1, 'C');
-        }
-    }
-
-    // Confirmation Status Table
-    function ConfirmationStatusTable($header, $data)
-    {
-        $this->SetFont('Arial', 'B', 12);
-        foreach ($header as $col) {
-            $this->Cell(45, 7, $col, 1);
-        }
-        $this->Ln();
-        $this->SetFont('Arial', '', 12);
-        if (!empty($data)) {
-            foreach ($data as $row) {
-                $this->Cell(45, 6, isset($row['status']) ? $row['status'] : '', 1);
-                $this->Cell(45, 6, isset($row['total_transactions']) ? $row['total_transactions'] : '', 1);
-                $this->Cell(45, 6, isset($row['total_revenue']) ? 'Rp ' . number_format($row['total_revenue'], 0, ',', '.') : '', 1);
-                $this->Cell(45, 6, isset($row['total_products_sold']) ? $row['total_products_sold'] : '', 1);
-                $this->Ln();
-            }
-        } else {
-            $this->Cell(180, 6, 'Tidak ada data', 1, 1, 'C');
-        }
-    }
-
-    // Product Report Table
-    function ProductReportTable($data)
-    {
-        $this->SetFont('Arial', 'B', 12);
-        $this->Cell(24, 7, 'ID Produk', 1);
-        $this->Cell(90, 7, 'Nama Produk', 1);
-        $this->Cell(30, 7, 'Total Terjual', 1);
-        $this->Cell(40, 7, 'Total Pendapatan', 1);
-        $this->Ln();
-        $this->SetFont('Arial', '', 12);
-        if (!empty($data)) {
-            foreach ($data as $row) {
-                $this->Cell(24, 6, isset($row['product_id']) ? $row['product_id'] : '', 1);
-                $productName = isset($row['product_name']) ? $row['product_name'] : '';
-                if (strlen($productName) > 50) {
-                    $productName = substr($productName, 0, 40) . '...';
-                }
-                $this->Cell(90, 6, $productName, 1);
-                $this->Cell(30, 6, isset($row['total_quantity']) ? $row['total_quantity'] : '', 1);
-                $this->Cell(40, 6, isset($row['total_revenue']) ? 'Rp ' . number_format($row['total_revenue'], 0, ',', '.') : '', 1);
-                $this->Ln();
-            }
-        } else {
-            $this->Cell(24, 6, 'Tidak ada data', 1, 1, 'C');
-        }
-    }
-
-    // Top Selling Products Table
-    function TopProductsTable($header, $data)
-    {
-        $this->SetFont('Arial', 'B', 12);
-        foreach ($header as $col) {
-            $this->Cell(90, 7, $col, 1);
-        }
-        $this->Ln();
-        $this->SetFont('Arial', '', 12);
-        if (!empty($data)) {
-            foreach ($data as $row) {
-                $this->Cell(90, 6, isset($row['product_name']) ? $row['product_name'] : '', 1);
-                $this->Cell(90, 6, isset($row['total_sold']) ? $row['total_sold'] : '', 1);
-                $this->Ln();
-            }
-        } else {
-            $this->Cell(180, 6, 'Tidak ada data', 1, 1, 'C');
-        }
-    }
-
-    // Section Title
-    function SectionTitle($title)
-    {
-        $this->SetFont('Arial', 'B', 14);
-        $this->Cell(0, 10, $title, 0, 1, 'L');
-        $this->Ln(5);
-    }
-}
-
-$pdf = new PDF();
-$pdf->AddPage();
+// Buat konten HTML untuk PDF
+$html = '
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Transaksi</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Laporan Transaksi</h1>
+    </div>
+';
 
 // Penjualan Bulanan
-$pdf->SectionTitle('Penjualan Bulanan');
-$header = array('Bulan', 'Total Produk Terjual', 'Total Pendapatan');
-$pdf->MonthlyTransactionsTable($header, $salesData);
+$html .= '<div class="section-title">Penjualan Bulanan</div>';
+$html .= '<table>';
+$html .= '<thead><tr><th>Bulan</th><th>Total Produk Terjual</th><th>Total Pendapatan</th></tr></thead>';
+$html .= '<tbody>';
+if (!empty($salesData)) {
+    foreach ($salesData as $row) {
+        $html .= '<tr>';
+        $html .= '<td>' . htmlspecialchars($row['month']) . '</td>';
+        $html .= '<td>' . htmlspecialchars($row['total_quantity']) . '</td>';
+        $html .= '<td>Rp ' . number_format($row['total_revenue'], 0, ',', '.') . '</td>';
+        $html .= '</tr>';
+    }
+} else {
+    $html .= '<tr><td colspan="3" style="text-align: center;">Tidak ada data</td></tr>';
+}
+$html .= '</tbody></table>';
 
 // Status Konfirmasi
-$pdf->AddPage();
-$pdf->SectionTitle('Status Konfirmasi');
-$header = array('Status', 'Total Transaksi', 'Pendapatan', 'Total Produk Terjual');
-$pdf->ConfirmationStatusTable($header, $confirmationStatus);
+$html .= '<div class="section-title">Status Konfirmasi</div>';
+$html .= '<table>';
+$html .= '<thead><tr><th>Status</th><th>Total Transaksi</th><th>Pendapatan</th><th>Total Produk Terjual</th></tr></thead>';
+$html .= '<tbody>';
+if (!empty($confirmationStatus)) {
+    foreach ($confirmationStatus as $row) {
+        $html .= '<tr>';
+        $html .= '<td>' . htmlspecialchars($row['status']) . '</td>';
+        $html .= '<td>' . htmlspecialchars($row['total_transactions']) . '</td>';
+        $html .= '<td>Rp ' . number_format($row['total_revenue'], 0, ',', '.') . '</td>';
+        $html .= '<td>' . htmlspecialchars($row['total_products_sold']) . '</td>';
+        $html .= '</tr>';
+    }
+} else {
+    $html .= '<tr><td colspan="4" style="text-align: center;">Tidak ada data</td></tr>';
+}
+$html .= '</tbody></table>';
 
 // Laporan Per Item
-$pdf->AddPage();
-$pdf->SectionTitle('Laporan Per Item');
-$pdf->ProductReportTable($productReport);
-
+$html .= '<div class="section-title">Laporan Per Item</div>';
+$html .= '<table>';
+$html .= '<thead><tr><th>ID Produk</th><th>Nama Produk</th><th>Total Terjual</th><th>Total Pendapatan</th></tr></thead>';
+$html .= '<tbody>';
+if (!empty($productReport)) {
+    foreach ($productReport as $row) {
+        $html .= '<tr>';
+        $html .= '<td>' . htmlspecialchars($row['product_id']) . '</td>';
+        $html .= '<td>' . htmlspecialchars($row['product_name']) . '</td>';
+        $html .= '<td>' . htmlspecialchars($row['total_quantity']) . '</td>';
+        $html .= '<td>Rp ' . number_format($row['total_revenue'], 0, ',', '.') . '</td>';
+        $html .= '</tr>';
+    }
+} else {
+    $html .= '<tr><td colspan="4" style="text-align: center;">Tidak ada data</td></tr>';
+}
+$html .= '</tbody></table>';
+    
 // Produk Terlaris
-$pdf->AddPage();
-$pdf->SectionTitle('Produk Terlaris');
-$header = array(
-    'Nama Produk', 
-    'Total Terjual'
-);
-$pdf->TopProductsTable($header, $topProducts);
+$html .= '<div class="section-title">Produk Terlaris</div>';
+$html .= '<table>';
+$html .= '<thead><tr><th>Nama Produk</th><th>Total Terjual</th></tr></thead>';
+$html .= '<tbody>';
+if (!empty($topProducts)) {
+    foreach ($topProducts as $row) {
+        $html .= '<tr>';
+        $html .= '<td>' . htmlspecialchars($row['product_name']) . '</td>';
+        $html .= '<td>' . htmlspecialchars($row['total_sold']) . '</td>';
+        $html .= '</tr>';
+    }
+} else {
+    $html .= '<tr><td colspan="2" style="text-align: center;">Tidak ada data</td></tr>';
+}
+$html .= '</tbody></table>';
 
-$pdf->Output();
+$html .= '</body></html>';
+
+// Load konten HTML ke Dompdf
+$dompdf->loadHtml($html);
+
+// (Opsional) Setel ukuran dan orientasi kertas
+$dompdf->setPaper('A4', 'portrait');
+
+// Render PDF
+$dompdf->render();
+
+// Output PDF ke browser
+$dompdf->stream('laporan_transaksi.pdf', array("Attachment" => false));
 ?>

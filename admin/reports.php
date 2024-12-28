@@ -169,26 +169,35 @@ $salesData = getMonthlySalesDataByDateRange($startDate, $endDate, $db);
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <h5 class="card-title text-center mb-4">Laporan Per Item</h5>
-            <table class="table table-bordered table-sm">
-                <thead class="table-info">
-                <tr>
-                    <th>ID Produk</th>
-                    <th>Nama Produk</th>
-                    <th>Total Terjual</th>
-                    <th>Total Pendapatan</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($productReport as $product): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($product['product_id']) ?></td>
-                        <td><?= htmlspecialchars($product['product_name']) ?></td>
-                        <td><?= $product['total_quantity'] ?></td>
-                        <td>Rp <?= number_format($product['total_revenue'], 0, ',', '.') ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+            <div class="row">
+                <!-- Chart -->
+                <div class="col-md-6">
+                    <canvas id="productReportChart" style="max-height: 300px;"></canvas>
+                </div>
+                <!-- Table -->
+                <div class="col-md-6">
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-info">
+                        <tr>
+                            <th>ID Produk</th>
+                            <th>Nama Produk</th>
+                            <th>Total Terjual</th>
+                            <th>Total Pendapatan</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($productReport as $product): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($product['product_id']) ?></td>
+                                <td><?= htmlspecialchars($product['product_name']) ?></td>
+                                <td><?= $product['total_quantity'] ?></td>
+                                <td>Rp <?= number_format($product['total_revenue'], 0, ',', '.') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -322,18 +331,68 @@ new Chart(ctxConfirmation, {
     }
 });
 
+// Product Report Chart
+const productReportData = <?php echo json_encode($productReport); ?>;
+const productLabels = productReportData.map(product => product['product_name']);
+const productQuantities = productReportData.map(product => product['total_quantity']);
+const productRevenues = productReportData.map(product => (product['total_revenue'] / 1000000).toFixed(2)); // Konversi ke juta
+
+const ctxProductReport = document.getElementById('productReportChart').getContext('2d');
+new Chart(ctxProductReport, {
+    type: 'bar',
+    data: {
+        labels: productLabels,
+        datasets: [
+            {
+                label: 'Total Terjual',
+                data: productQuantities,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Total Pendapatan (dalam juta)',
+                data: productRevenues,
+                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 50, // Set maximum value to 50 juta
+                ticks: {
+                    stepSize: 1, // Set step size to 1 juta
+                    callback: function(value) {
+                        return value + ' juta';
+                    }
+                }
+            }
+        }
+    }
+});
+
 // Top Selling Products Chart
 const topProductsData = <?php echo json_encode($topProducts); ?>;
-const productLabels = topProductsData.map(product => product['product_name']);
-const productSales = topProductsData.map(product => product['total_sold']);
+const topProductLabels = topProductsData.map(product => product['product_name']);
+const topProductSales = topProductsData.map(product => product['total_sold']);
 
 const ctxTopProducts = document.getElementById('topSellingProductsChart').getContext('2d');
 new Chart(ctxTopProducts, {
     type: 'pie',
     data: {
-        labels: productLabels,
+        labels: topProductLabels,
         datasets: [{
-            data: productSales,
+            data: topProductSales,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.6)',
                 'rgba(54, 162, 235, 0.6)',
