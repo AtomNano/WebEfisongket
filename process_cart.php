@@ -11,14 +11,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Hitung total jumlah barang dalam keranjang
-$total_items = 0;
-if (isset($_SESSION['cart'][$user_id])) {
-    foreach ($_SESSION['cart'][$user_id] as $item) {
-        $total_items += $item['quantity'];
-    }
-}
-
 // Ensure the request is made via POST method
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve the action from POST request
@@ -67,6 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt = $db->prepare($query);
                     $stmt->bind_param('iiii', $user_id, $product_id, $quantity, $quantity);
                     $stmt->execute();
+
+                    // Hitung total jumlah barang dalam keranjang
+                    $total_items = 0;
+                    foreach ($_SESSION['cart'][$user_id] as $item) {
+                        $total_items += $item['quantity'];
+                    }
 
                     echo json_encode(['status' => 'success', 'message' => 'Produk berhasil ditambahkan ke keranjang!', 'total_items' => $total_items]);
                 } else {

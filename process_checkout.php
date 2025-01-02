@@ -2,7 +2,6 @@
 session_start();
 include 'phpconection.php'; // Koneksi ke database
 
-
 // Pastikan form checkout disubmit dengan metode POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Ambil data dari form
@@ -77,6 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $delete_cart_stmt = mysqli_prepare($db, $delete_cart_query);
                 mysqli_stmt_bind_param($delete_cart_stmt, 'i', $user_id);
                 mysqli_stmt_execute($delete_cart_stmt);
+
+                // Kosongkan keranjang di session
+                unset($_SESSION['cart'][$user_id]);
 
                 // Ambil tanggal dibuat (created_at) dari transaksi yang baru
                 $query = "SELECT created_at FROM transactions WHERE id = ?";

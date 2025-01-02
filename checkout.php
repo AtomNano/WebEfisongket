@@ -40,6 +40,12 @@ $_SESSION['total_price'] = $total_price;
 ?>
 
 <style>
+
+body{
+    background-image: url('gambarEfi/bg1.png');
+    backdrop-filter: blur(5px);
+}
+
     .checkout-container {
         display: flex;
         justify-content: space-between;
@@ -49,7 +55,9 @@ $_SESSION['total_price'] = $total_price;
         flex: 1;
         border: 1px solid #ddd;
         padding: 20px;
+        margin-bottom: 50px;
         border-radius: 8px;
+        background-color: #fff; /* Set background to white */
     }
     .transaction-history {
         margin-top: 30px;
@@ -71,7 +79,7 @@ $_SESSION['total_price'] = $total_price;
 </style>
 
 <div class="container mt-1">
-    <h2 class="text-center">Checkout</h2>
+    <h2 class="text-center text-white">Checkout</h2>
     <div class="checkout-container">
         <!-- Formulir Checkout -->
         <div class="checkout-form">

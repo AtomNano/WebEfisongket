@@ -96,32 +96,36 @@ if ($email) {
 <div class="container mt-5">
     <div class="transaction-container">
         <!-- Detail Transaksi -->
-        <div class="transaction-detail">
-            <h2>Detail Transaksi</h2>
-            <p><strong>ID Transaksi:</strong> <?php echo htmlspecialchars($transaction['id']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($transaction['email']); ?></p>
-            <p><strong>Nama:</strong> <?php echo htmlspecialchars($transaction['name']); ?></p>
-            <p><strong>Alamat:</strong> <?php echo htmlspecialchars($transaction['address']); ?></p>
-            <p><strong>Nomor Telepon:</strong> <?php echo htmlspecialchars($transaction['phone']); ?></p>
-            <p><strong>Status:</strong> 
-                <span class="badge-status sm <?php 
-                    if (strcasecmp($transaction['status'], 'Dikonfirmasi') === 0) echo 'badge-dikonfirmasi';
-                    elseif (strcasecmp($transaction['status'], 'Tertunda') === 0) echo 'badge-tertunda';
-                    elseif (strcasecmp($transaction['status'], 'Gagal') === 0) echo 'badge-gagal';
-                ?>">
-                    <?php echo htmlspecialchars($transaction['status']); ?>
-                </span>
-            </p>
-            <p><strong>Status Pengiriman:</strong> 
-                <span class="badge-status sm <?php 
-                    if (strcasecmp($transaction['shipping_status'], 'Dikirim') === 0) echo 'badge-dikirim';
-                    elseif (strcasecmp($transaction['shipping_status'], 'Tertunda') === 0) echo 'badge-tertunda';
-                ?>">
-                    <?php echo htmlspecialchars($transaction['shipping_status']); ?>
-                </span>
-            </p>
-            <p><strong>Total Harga:</strong> Rp <?php echo number_format($transaction['total_price'], 0, ',', '.'); ?></p>
-        </div>
+<div class="transaction-detail">
+    <h2>Detail Transaksi</h2>
+    <p><strong>ID Transaksi:</strong> <?php echo htmlspecialchars($transaction['id']); ?></p>
+    <p><strong>Email:</strong> <?php echo htmlspecialchars($transaction['email']); ?></p>
+    <p><strong>Nama:</strong> <?php echo htmlspecialchars($transaction['name']); ?></p>
+    <p><strong>Alamat:</strong> <?php echo htmlspecialchars($transaction['address']); ?></p>
+    <p><strong>Nomor Telepon:</strong> <?php echo htmlspecialchars($transaction['phone']); ?></p>
+    <p><strong>Status:</strong> 
+        <span class="badge-status <?php 
+            if (strcasecmp($transaction['status'], 'Dikonfirmasi') === 0) echo 'badge-dikonfirmasi';
+            elseif (strcasecmp($transaction['status'], 'Tertunda') === 0) echo 'badge-tertunda';
+            elseif (strcasecmp($transaction['status'], 'Dibatalkan') === 0) echo 'badge-dibatalkan';
+            elseif (strcasecmp($transaction['status'], 'Dalam Proses') === 0) echo 'badge-dalam-proses';
+            else echo 'badge-tertunda';
+        ?>">
+            <?php echo htmlspecialchars($transaction['status']); ?>
+        </span>
+    </p>
+    <p><strong>Status Pengiriman:</strong> 
+        <span class="badge-status <?php 
+            if (strcasecmp($transaction['shipping_status'], 'Dikirim') === 0) echo 'badge-dikirim';
+            elseif (strcasecmp($transaction['shipping_status'], 'Tertunda') === 0) echo 'badge-tertunda';
+            elseif (strcasecmp($transaction['shipping_status'], 'Dibatalkan') === 0) echo 'badge-dibatalkan';
+            else echo 'badge-tertunda';
+        ?>">
+            <?php echo htmlspecialchars($transaction['shipping_status']); ?>
+        </span>
+    </p>
+    <p><strong>Total Harga:</strong> Rp <?php echo number_format($transaction['total_price'], 0, ',', '.'); ?></p>
+</div>
 
         <!-- Item Pesanan -->
         <div class="order-items">

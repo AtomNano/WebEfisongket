@@ -23,62 +23,87 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-<section class="vh-100 bg-light">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col col-xl-10">
-                <div class="card shadow-lg p-3 mb-5" style="border-radius: 1rem;">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+    }
+
+    section {
+        padding: 60px;
+    }
+
+    .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('gambarEfi/A_modern_web_background_inspired_by_Indonesian_tra.png.webp') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(8px);
+        z-index: -1;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .card {
+        max-height: 70vh;
+    }
+
+    .card img {
+        object-fit: cover;
+        height: 100%;
+    }
+</style>
+
+<div class="background"></div>
+
+<section class="d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg rounded-5 overflow-hidden">
                     <div class="row g-0">
-                        <div class="col-md-6 col-lg-5 d-none d-md-block">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-                                alt="Register form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                        <!-- Kolom Gambar -->
+                        <div class="col-md-6 d-none d-md-block">
+                            <img src="https://i.pinimg.com/736x/fd/27/1d/fd271d3c6cc30147f896acc8ec68f1eb.jpg"
+                                 alt="Register form"
+                                 class="img-fluid h-100"
+                                 style="object-fit: cover;">
                         </div>
-                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                            <div class="card-body p-4 p-lg-5 text-black">
+                        <!-- Kolom Form Register -->
+                        <div class="col-md-6">
+                            <div class="card-body p-5">
+                                <h2 class="text-center fw-bold">Daftar</h2>
+                                <h2 class="text-center mb-4 fw-bold">Efi Songket</h2>
                                 <form method="POST" action="">
-                                    <div class="d-flex align-items-center mb-3 pb-1">
-                                        <i class="fas fa-user-plus fa-2x me-3" style="color: #ff6219;"></i>
-                                        <span class="h1 fw-bold mb-0">Register</span>
-                                    </div>
-
-                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create your account
-                                    </h5>
-
                                     <!-- Tampilkan error jika ada -->
                                     <?php if (!empty($error)): ?>
-                                    <div class="alert alert-danger" role="alert">
-                                        <?= htmlspecialchars($error); ?>
-                                    </div>
+                                        <div class="alert alert-danger"><?php echo $error; ?></div>
                                     <?php endif; ?>
-
                                     <!-- Input Email -->
-                                    <div class="form-outline mb-4">
-                                        <input type="email" id="form2Example17" name="email"
-                                            class="form-control form-control-lg" required />
-                                        <label class="form-label" for="form2Example17">Email address</label>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Alamat Email</label>
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="Masukkan email Anda" required>
                                     </div>
-
-                                    <div class="form-outline mb-4">
-                                        <input type="password" id="form2Example27" name="password"
-                                            class="form-control form-control-lg" minlength="8" required />
-                                        <label class="form-label" for="form2Example27">Password</label>
-                                        <div class="invalid-feedback">
-                                            Password harus memiliki minimal 8 karakter.
-                                        </div>
+                                    <!-- Input Password -->
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Kata Sandi</label>
+                                        <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan kata sandi Anda" required>
                                     </div>
-
-                                    <!-- Submit Button -->
-                                    <div class="pt-1 mb-4">
-                                        <button name="submit" type="submit"
-                                            class="btn btn-dark btn-lg btn-block">Register</button>
+                                    <!-- Tombol Register -->
+                                    <div class="d-grid">
+                                        <button type="submit" name="submit" class="btn btn-primary rounded-pill">Daftar</button>
                                     </div>
-
-                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Already have an account? <a
-                                            href="index.php?p=login" style="color: #393f81;">Login here</a></p>
-
-                                    <a href="#!" class="small text-muted">Terms of use.</a>
-                                    <a href="#!" class="small text-muted">Privacy policy</a>
                                 </form>
+                                <div class="text-center mt-3">
+                                    <span>Sudah punya akun? <a href="index.php?p=login" class="text-primary">Masuk di sini</a></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -87,13 +112,3 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 </section>
-
-<script>
-document.getElementById('form2Example27').addEventListener('input', function() {
-    if (this.value.length < 8) {
-        this.setCustomValidity('Password harus memiliki minimal 8 karakter.');
-    } else {
-        this.setCustomValidity('');
-    }
-});
-</script>
