@@ -121,11 +121,17 @@ if (isset($_POST['add_to_cart'])) {
         <div class="offcanvas-body" style="background-color: #f9f9f9; border-radius: 10px;">
             <!-- Header Keranjang -->
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-primary" style="font-size: 1.1rem;">Keranjang Anda</span>
+            <span class="text-primary" style="font-size: 1.1rem;">Keranjang Anda</span>
                 <span class="badge bg-primary rounded-pill" style="font-size: 1.1rem;" id="cartCount">
                     <?php 
                     // Menampilkan jumlah produk dalam keranjang
-                    echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+                    $total_items = 0;
+                    if (isset($_SESSION['cart'][$_SESSION['user_id']])) {
+                        foreach ($_SESSION['cart'][$_SESSION['user_id']] as $item) {
+                            $total_items += $item['quantity'];
+                        }
+                    }
+                    echo $total_items;
                     ?>
                 </span>
             </h4>

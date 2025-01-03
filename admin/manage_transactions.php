@@ -106,7 +106,7 @@ if (!$result) {
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="badge <?php echo ($row['shipping_status'] == 'Tertunda') ? 'badge-warning' : 'badge-success'; ?>">
+                                    <span class="badge <?php echo ($row['shipping_status'] == 'Tertunda') ? 'badge-warning' : ($row['shipping_status'] == 'Dikirim' ? 'badge-success' : 'badge-secondary'); ?>">
                                         <?php echo $row['shipping_status']; ?>
                                     </span>
                                 </td>
