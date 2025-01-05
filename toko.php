@@ -120,7 +120,7 @@ $max_price = $_GET['max_price'] ?? 10000000;
         .product-item {
             background: #fff;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(243, 240, 240, 0.1);
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -165,6 +165,15 @@ $max_price = $_GET['max_price'] ?? 10000000;
         
         
     }
+    #billboard {
+        background-image: url('gambarEfi/bg1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        
+        
+    }
 
     .product-content h5 {
         color: #333;
@@ -185,10 +194,11 @@ $max_price = $_GET['max_price'] ?? 10000000;
     </style>
     
 <!-- Section for the introductory text -->
-<section class="py-1 bg-light text-center">
+<section id="billboard" class="py-1 bg-light text-center">
+
     <div class="container">
-        <h3 class="font-weight-bold" data-aos="fade-up">Temukan Koleksi Baju Tradisional Songket</h3>
-        <p data-aos="fade-up">Yang elegan dan berkualitas tinggi.Setiap produk dirancang dengan penuh perhatian untuk memberikan kenyamanan dan gaya.</p>
+        <h3 class="font-weight-bold text-light" data-aos="fade-up">Temukan Koleksi Baju Tradisional Songket</h3>
+        <p class="text-light" data-aos="fade-up">Yang elegan dan berkualitas tinggi.Setiap produk dirancang dengan penuh perhatian untuk memberikan kenyamanan dan gaya.</p>
     </div>
 </section>
 

@@ -79,7 +79,7 @@ if (!$result) {
     <div class="container">
         <div class="card">
             <div class="card-header text-center">
-                <h2 class="mb-0">Daftar Transaksi</h2>
+                <h2 class="mb-0">Status Transaksi</h2>
             </div>
             <div class="card-body">
                 <table id="transactionsTable" class="table table-striped table-hover">
