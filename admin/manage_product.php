@@ -57,7 +57,7 @@ if (!$result) {
         <h2 class="text-warning">Manage Products</h2>
         
         <!-- Button to trigger modal for adding product -->
-        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product</button>
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">Tambah Produk</button>
 
              <!-- Dropdown Filter Berdasarkan Kategori -->
         <!-- Dropdown Filter Berdasarkan Kategori -->
@@ -105,19 +105,19 @@ if (!$result) {
                         </td>
                         <td>
                             <!-- Edit Button -->
-                            <button class="btn btn-warning btn-sm editProductBtn" 
+                            <button class="btn btn-warning btn-sm editProductBtn mb-2" 
                                     data-id="<?= $product['id'] ?>" 
                                     data-name="<?= htmlspecialchars($product['name']) ?>" 
                                     data-description="<?= htmlspecialchars($product['description']) ?>" 
                                     data-price="<?= $product['price'] ?>" 
                                     data-stock="<?= $product['stock'] ?>"
                                     data-category-id="<?= $product['category_id'] ?>"
-                                    data-image="<?= $product['image'] ?>">Edit</button>
+                                    data-image="<?= $product['image'] ?>">Edit Produk</button>
                         
                             <!-- Delete Button -->
                             <form action="crud_product.php?proses=delete" method="POST" style="display:inline;">
                                 <input type="hidden" name="id" value="<?= $product['id'] ?>">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?')">Hapus</button>
                             </form>
                         </td>
                     </tr>

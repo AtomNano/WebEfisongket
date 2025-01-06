@@ -30,7 +30,7 @@ if (isset($_GET['proses'])) {
 
     // Edit Status Transaksi
     if ($proses == 'edit') {
-        $status = 'Confirmed';  // Status yang akan diubah, misalnya 'Confirmed'
+        $status = 'Dikonfirmasi';  // Status yang akan diubah, misalnya 'Confirmed'
 
         $update_query = "UPDATE transactions SET status = ? WHERE id = ?";
         $stmt = mysqli_prepare($db, $update_query);

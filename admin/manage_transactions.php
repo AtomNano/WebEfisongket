@@ -2,7 +2,7 @@
 include 'phpconection.php'; // Menghubungkan ke database
 
 // Ambil semua transaksi yang tidak dihapus dari database, mengurutkan berdasarkan created_at
-$result = mysqli_query($db, "SELECT * FROM transactions WHERE deleted = 0 ORDER BY created_at DESC");
+$result = mysqli_query($db, "SELECT * FROM transactions WHERE deleted = 0 ORDER BY id DESC");
 
 // Periksa apakah query berhasil
 if (!$result) {
@@ -55,6 +55,13 @@ if (!$result) {
             color: #333;
             font-weight: bold;
         }
+
+        .badge {
+            font-size: 1rem; /* Ukuran font lebih besar */
+            padding: 10px 15px; /* Menambah ruang di dalam badge */
+            border-radius: 50px; /* Membuat ujung lebih melengkung */
+        }
+
         .table tbody tr:hover {
             background-color: #f1f1f1;
         }
@@ -122,18 +129,18 @@ if (!$result) {
                                 <td>
                                     <!-- Tombol Edit untuk status transaksi -->
                                     <a href="process_transaction.php?proses=edit&id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">
-                                        Konfirmasi
+                                        Konfirmasi Pembayaran
                                     </a>
                                     <!-- Tombol Hapus untuk menghapus transaksi -->
                                     <button class="btn btn-danger btn-sm" onclick="confirmDelete(<?php echo $row['id']; ?>)">
                                         Hapus
                                     </button>
                                     <!-- Tombol Lihat Detail -->
-                                    <a href="index.php?p=detail_transaksi&id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm">
-                                        Lihat Detail
+                                    <a href="index.php?p=detail_transaksi&id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm m-1">
+                                        Lihat Detail Transaksi
                                     </a>
                                     <!-- Tombol Ubah Status Pengiriman -->
-                                    <button class="btn btn-secondary btn-sm m-1" onclick="updateShippingStatus(<?php echo $row['id']; ?>, '<?php echo $row['shipping_status']; ?>')">
+                                    <button class="btn btn-secondary btn-sm " onclick="updateShippingStatus(<?php echo $row['id']; ?>, '<?php echo $row['shipping_status']; ?>')">
                                         Ubah Status Pengiriman
                                     </button>
                                 </td>
@@ -145,9 +152,10 @@ if (!$result) {
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <link href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
     $(document).ready(function() {

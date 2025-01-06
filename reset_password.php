@@ -104,12 +104,12 @@ if (isset($_POST['submit'])) {
                                     <!-- Password Baru -->
                                     <div class="mb-3">
                                         <label for="new_password" class="form-label">Password Baru</label>
-                                        <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Masukkan password baru Anda" required>
+                                        <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Masukkan password baru Anda" minlength="8" required>
                                     </div>
                                     <!-- Konfirmasi Password Baru -->
                                     <div class="mb-4">
                                         <label for="confirm_password" class="form-label">Konfirmasi Password Baru</label>
-                                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Konfirmasi password baru Anda" required>
+                                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Konfirmasi password baru Anda" minlength="8" required>
                                     </div>
                                     <!-- Tombol -->
                                     <div class="d-grid">

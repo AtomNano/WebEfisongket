@@ -73,6 +73,11 @@ $transaction = $result->fetch_assoc(); // Ambil hasil transaksi sebagai array
         .table th {
             background-color: #f8f9fa;
         }
+        .product-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
     </style>
 </head>
 <body>
@@ -152,6 +157,7 @@ $transaction = $result->fetch_assoc(); // Ambil hasil transaksi sebagai array
             <table class="table table-bordered table-striped table-hover rounded">
                 <thead>
                     <tr>
+                        <th>Gambar Produk</th>
                         <th>Nama Produk</th>
                         <th>Jumlah</th>
                         <th>Harga</th>
@@ -161,9 +167,11 @@ $transaction = $result->fetch_assoc(); // Ambil hasil transaksi sebagai array
                 <tbody>
                     <?php
                     // Ambil data order item berdasarkan transaction_id
-                    $order_query = "SELECT oi.product_id, oi.quantity, oi.price, p.name FROM order_item oi 
-                                    JOIN products p ON oi.product_id = p.id 
-                                    WHERE oi.transaction_id = ?";
+                    $order_query = "
+                        SELECT oi.product_id, oi.quantity, oi.price, p.name, p.image AS product_image 
+                        FROM order_item oi 
+                        JOIN products p ON oi.product_id = p.id 
+                        WHERE oi.transaction_id = ?";
                     $stmt_order = $db->prepare($order_query);
                     $stmt_order->bind_param('i', $transaction['id']);
                     $stmt_order->execute();
@@ -171,6 +179,7 @@ $transaction = $result->fetch_assoc(); // Ambil hasil transaksi sebagai array
 
                     while ($item = $result_order->fetch_assoc()) {
                         echo "<tr>
+                                <td><img src='uploads/" . htmlspecialchars($item['product_image']) . "' alt='Gambar Produk' class='product-image'></td>
                                 <td>" . htmlspecialchars($item['name']) . "</td>
                                 <td>" . htmlspecialchars($item['quantity']) . "</td>
                                 <td>Rp " . number_format($item['price'], 0, ',', '.') . "</td>

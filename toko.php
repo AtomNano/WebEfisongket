@@ -131,13 +131,16 @@ $max_price = $_GET['max_price'] ?? 10000000;
         }
         
         .product-image {
-        width: 100%;
-        height: 300px;
-        object-fit: cover;
-        border-radius: 8px;
-        transition: transform 0.3s ease;
-        
-    }
+    width: 80%;
+    height: 300px;
+    position: relative;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    margin: auto; /* Untuk memposisikan di tengah secara horizontal */
+    display: flex; /* Untuk memposisikan di tengah secara horizontal dan vertikal */
+    justify-content: center; /* Untuk memposisikan di tengah secara horizontal */
+    align-items: center; /* Untuk memposisikan di tengah secara vertikal */
+}
 
     .product-image:hover {
         transform: scale(1.05);
@@ -166,31 +169,42 @@ $max_price = $_GET['max_price'] ?? 10000000;
         
     }
     #billboard {
-        background-image: url('gambarEfi/bg1.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        position: relative;
-        
-        
-    }
+    position: relative;
+    overflow: hidden; /* Memastikan pseudo-element tidak keluar dari batas */
+    z-index: 1; /* Pastikan elemen ini memiliki z-index yang lebih tinggi dari pseudo-element */
+}
 
-    .product-content h5 {
-        color: #333;
-        min-height: 50px; /* Tetapkan tinggi minimum untuk nama produk */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
+#billboard::before {
+    content: '';
+    background-image: url('gambarEfi/bg1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(5px); /* Sesuaikan nilai blur sesuai kebutuhan */
+    z-index: -1; /* Memastikan pseudo-element berada di belakang konten */
+}
 
-    .product-content a {
-        color:rgb(131, 131, 131);
-    }
+.product-content h5 {
+    color: #333;
+    min-height: 50px; /* Tetapkan tinggi minimum untuk nama produk */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 
-    .product-content a:hover {
-        color:rgb(0, 0, 0);
-    }
+.product-content a {
+    color: rgb(131, 131, 131);
+}
+
+.product-content a:hover {
+    color: rgb(0, 0, 0);
+}
     </style>
     
 <!-- Section for the introductory text -->
@@ -261,8 +275,8 @@ $max_price = $_GET['max_price'] ?? 10000000;
                 <div class="row g-4">
                     <?php if (mysqli_num_rows($result) > 0): ?>
                         <?php while ($product = mysqli_fetch_assoc($result)): ?>
-                            <div class="col-12 col-sm-6 col-md-3 mb-4 d-flex align-items-stretch">
-                                <div class="product-item image-zoom-effect link-effect bg-white rounded shadow-sm w-100">
+                            <div class="col-12 col-sm-6 col-md-3 mb-2 d-flex align-items-stretch">
+                                <div class="product-item image-zoom-effect link-effect bg-white rounded shadow-sm w-100 border border-secondary-subtle border-1">
                                     <div class="image-holder position-relative">
                                         <!-- Link ke halaman detail produk -->
                                         <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="stretched-link">
@@ -276,11 +290,13 @@ $max_price = $_GET['max_price'] ?? 10000000;
                                     </div>
                                     <div class="product-content p-3 text-center d-flex flex-column">
                                         <!-- Product Name -->
-                                        <h5 class="text-uppercase fs-5 mt-3 flex-grow-1 d-flex align-items-center justify-content-center">
-                                            <?= htmlspecialchars($product['name']) ?>
-                                        </h5>
+                                        <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="text-decoration-none">
+                                            <h5 class="text-uppercase fs-5 mt-3 d-flex align-items-center justify-content-center" style="height: 70px; overflow: hidden;">
+                                                <?= htmlspecialchars($product['name']) ?>
+                                            </h5>
+                                        </a>
                                         <!-- Product Price -->
-                                        <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="text-decoration-none" data-after="Add to cart">
+                                        <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="text-decoration-none" data-after="Tambah Keranjang">
                                             <span class="text-primary font-weight-bold">Rp <?= number_format($product['price'], 0, ',', '.') ?></span>
                                         </a>
                                     </div>

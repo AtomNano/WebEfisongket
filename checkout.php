@@ -100,7 +100,10 @@ body{
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label">Nomor Telepon</label>
-                    <input type="text" id="phone" name="phone" class="form-control" required>
+                    <input type="text" id="phone" name="phone" class="form-control" 
+                        pattern="\+?\d{10,15}" 
+                        title="Masukkan nomor telepon yang valid, contoh: +628123456789" 
+                        required>
                 </div>
                 <div class="mb-3">
                     <label for="bank-account" class="form-label">Nomor Rekening Bank Pemilik</label>

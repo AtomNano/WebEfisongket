@@ -4,66 +4,86 @@ $title = 'Footer';
 $body_class = 'homepage';
 // Sertakan file header
 ?>
-<style>
-    footer p {
-        margin: 0;
-        padding: 0;
-    }
-</style>
-
 <footer class="bg-light py-5">
     <div class="container">
+        <!-- Footer Main Row -->
         <div class="row d-flex flex-wrap justify-content-between">
-            <div class="col-md-3 col-sm-6">
+            <!-- Tentang Kami -->
+            <div class="col-md-4 col-sm-6 mb-4">
                 <h5 class="widget-title text-uppercase mb-4">Tentang Kami</h5>
                 <p>Efi Songket menyediakan baju tradisional songket berkualitas tinggi untuk kebutuhan Anda.</p>
-                <ul class="list-unstyled d-flex gap-2">
-                    <li><a href="https://www.tiktok.com/@efi.songket?_t=8nlCsqc7Vcw&_r=1" class="text-secondary"><i class="bi bi-facebook"></i></a></li>
-                    <li><a href="https://www.facebook.com/efiyasnidar.indra?mibextid=ZbWKwL" class="text-secondary"><i class="bi bi-tiktok"></i></a></li>
-                    <li><a href="https://www.instagram.com/efisongketpandaisikek/" class="text-secondary"><i class="bi bi-instagram"></i></a></li>
-                    <li><a href="https://www.youtube.com/@RamadaniPutri-0277" class="text-secondary"><i class="bi bi-youtube"></i></a></li>
-                    <li><a href="https://api.whatsapp.com/send?phone=6285261093463&text=Hai%2C%20bagaimana%20saya%20bisa%20memesan%3F" class="text-secondary" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
+                <ul class="list-unstyled d-flex gap-3">
+                    <li><a href="https://www.facebook.com/efiyasnidar.indra?mibextid=ZbWKwL" class="text-secondary fs-5"><i class="bi bi-facebook"></i></a></li>
+                    <li><a href="https://www.tiktok.com/@efi.songket?_t=8nlCsqc7Vcw&_r=1" class="text-secondary fs-5"><i class="bi bi-tiktok"></i></a></li>
+                    <li><a href="https://www.instagram.com/efisongketpandaisikek/" class="text-secondary fs-5"><i class="bi bi-instagram"></i></a></li>
+                    <li><a href="https://www.youtube.com/@RamadaniPutri-0277" class="text-secondary fs-5"><i class="bi bi-youtube"></i></a></li>
+                    <li><a href="https://api.whatsapp.com/send?phone=6285261093463&text=Hai%2C%20bagaimana%20saya%20bisa%20memesan%3F" class="text-secondary fs-5" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
                 </ul>
             </div>
 
-            <div class="col-md-3 col-sm-6">
+            <!-- Tautan Cepat -->
+            <div class="col-md-4 col-sm-6 mb-4">
                 <h5 class="widget-title text-uppercase mb-4">Tautan Cepat</h5>
                 <ul class="list-unstyled">
-                    <li><a href="index.php" class="text-decoration-none">Beranda</a></li>
-                    <li><a href="about.php" class="text-decoration-none">Tentang Kami</a></li>
-                    <li><a href="shop.php" class="text-decoration-none">Produk</a></li>
-                    <li><a href="contact.php" class="text-decoration-none">Hubungi Kami</a></li>
+                    <li class="mb-2"><a href="index.php" class="text-decoration-none text-dark">Beranda</a></li>
+                    <li class="mb-2"><a href="about.php" class="text-decoration-none text-dark">Tentang Kami</a></li>
+                    <li class="mb-2"><a href="shop.php" class="text-decoration-none text-dark">Produk</a></li>
+                    <li class="mb-2"><a href="contact.php" class="text-decoration-none text-dark">Hubungi Kami</a></li>
                 </ul>
             </div>
 
-            <div class="col-md-3 col-sm-6">
+            <!-- Hubungi Kami -->
+            <div class="col-md-4 col-sm-6 mb-4">
                 <h5 class="widget-title text-uppercase mb-4">Hubungi Kami</h5>
-                <p>Email: <a href="mailto:info@efisongket.com" class="text-decoration-none">info@efisongket.com</a></p>
-                <p>Telepon: <a href="tel: +62 852-6109-3463" class="text-decoration-none"> +62 852-6109-3463</a></p>
-                <p>Alamat: Perum Bunda Persada Blok I No. 2</p>
-                <p>Kel. Gunuang Sarik,</p>
-                <p>Kec. Kuranji Balai Baru,</p>
-                <p>Kota Padang, Sumatera Barat, Indonesia 25173.</p>
-            </div>
-
-            <div class="col-md-3 col-sm-6">
-                <h5 class="widget-title text-uppercase mb-4">Newsletter</h5>
-                <form action="subscribe.php" method="post" class="d-flex gap-2">
-                    <input type="email" name="email" class="form-control" placeholder="Masukkan email Anda">
-                    <button type="submit" class="btn btn-primary rounded">Daftar</button>
-                </form>
+                <p>Email: <a href="mailto:info@efisongket.com" class="text-decoration-none text-dark">info@efisongket.com</a></p>
+                <p>Telepon: <a href="tel:+6285261093463" class="text-decoration-none text-dark">+62 852-6109-3463</a></p>
+                <p>Alamat: <br>
+                    Perum Bunda Persada Blok I No. 2<br>
+                    Kel. Gunuang Sarik, Kec. Kuranji Balai Baru,<br>
+                    Kota Padang, Sumatera Barat, Indonesia 25173.
+                </p>
             </div>
         </div>
-        <div class="row mt-4 border-top pt-4">
+
+        <!-- Footer Bottom Row -->
+        <div class="row mt-4 pt-4 border-top">
             <div class="col-md-6">
                 <p class="mb-0">&copy; <?= date('Y'); ?> Efi Songket. Semua Hak Dilindungi.</p>
             </div>
             <div class="col-md-6 text-md-end">
-                <!-- Optional Additional Content Here -->
+                <p class="mb-0">Didesain dengan ❤️ oleh Efi Songket Team</p>
             </div>
         </div>
     </div>
 </footer>
+
+<style>
+    footer {
+        background-color: #f8f9fa;
+        color: #6c757d;
+    }
+    footer .widget-title {
+        font-weight: 600;
+        color: #343a40;
+    }
+    footer ul li a:hover {
+        color: #007bff;
+    }
+    footer ul {
+        padding-left: 0;
+    }
+    footer ul li {
+        list-style: none;
+    }
+    footer .btn-primary {
+        background-color: #343a40;
+        border: none;
+    }
+    footer .btn-primary:hover {
+        background-color: #495057;
+    }
+</style>
+
 
 <!-- JavaScript Files -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

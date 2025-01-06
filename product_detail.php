@@ -65,15 +65,7 @@ if (isset($_POST['add_to_cart'])) {
 ?>
 
 <style>
-    .rating {
-        color: #ffcc00;
-    }
-    .rating span {
-        font-size: 1.2rem;
-    }
-    .review-section {
-        margin-top: 40px;
-    }
+    
 
     .offcanvas-backdrop {
         background-color: rgba(0, 0, 0, 0.5) !important; /* Kurangi tingkat kegelapan */
@@ -84,12 +76,12 @@ if (isset($_POST['add_to_cart'])) {
     <!-- Section Detail Produk -->
     <section id="product-detail" class="container my-5 justify-content-center">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+        <div class="col-md-6 d-flex justify-content-center align-items-center">
                 <!-- Gambar Produk -->
                 <img src="./admin/uploads/<?= !empty($product['image']) ? $product['image'] : 'default.png' ?>" 
-                alt="Product Image" 
-                class="img-fluid product-image rounded" 
-                style="width: 650px; height: 550px; object-fit: cover; object-position: center;">
+                    alt="Product Image" 
+                    class="img-fluid product-image rounded" 
+                    style="max-width: 100%; height: 550px; object-fit: cover; object-position: center;">
             </div>
             <div class="col-md-5">
                 <h3 class="text-warning"><?= htmlspecialchars($product['name']) ?></h3>
@@ -101,13 +93,20 @@ if (isset($_POST['add_to_cart'])) {
                 
                 <!-- Form untuk menambahkan produk ke keranjang -->
                 <form method="POST" id="addToCartForm">
-                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                    <input type="number" name="quantity" value="1" min="1" class="form-control mb-3" required>
-                    <div class="d-flex mx-2 align-items-center">
-                        <button type="submit" name="add_to_cart" class="btn btn-primary rounded-pill mx-2">Tambah Keranjang</button>
-                        <a href="index.php?p=toko" class="btn btn-outline-secondary rounded-pill">Kembali ke Produk</a>
-                    </div>
-                </form>
+                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                        <input type="number" name="quantity" value="1" min="1" class="form-control mb-3" required>
+                        <div class="d-flex mx-2 align-items-center">
+                            <button type="submit" name="add_to_cart" class="btn btn-primary rounded-pill mx-2">Tambah Keranjang</button>
+                            <a href="index.php?p=toko" class="btn btn-outline-secondary rounded-pill mx-2">Kembali ke Produk</a>
+                            <a href="https://api.whatsapp.com/send?phone=6285261093463&text=Hai%2C%20saya%20mau%20bertanya%20tentang%20transaksi%20denganPembelian%20dengan%20ID%20<?php echo urlencode($transaction['id']); ?>." 
+                            class="btn btn-success rounded-pill mx-2 d-flex align-items-center"
+                            style="font-size: 11px; padding: 10px 11px;" 
+                            target="_blank">
+                                <i class="bi bi-whatsapp me-2" style="font-size: 11px;">Tanya WhatsApp</i> 
+                            </a>
+                        </div>
+                    </form>
+
             </div>
         </div>
     </section>

@@ -94,7 +94,7 @@ if (isset($_POST['submit'])) {
                                     <!-- Input Password -->
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Kata Sandi</label>
-                                        <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan kata sandi Anda" required>
+                                        <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan kata sandi Anda" minlength="8" required>
                                     </div>
                                     <!-- Tombol Register -->
                                     <div class="d-grid">

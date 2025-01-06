@@ -76,35 +76,40 @@ if ($email) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .product-image {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 150px;
             object-fit: cover;
         }
-        .badge-status {
-            font-size: 1rem;
-            padding: 10px 15px;
-            border-radius: 50px;
-        }
-        .badge-dikonfirmasi {
-            background-color: #28a745;
-            color: white;
-        }
-        .badge-tertunda {
-            background-color: #ffc107;
-            color: black;
-        }
-        .badge-gagal {
-            background-color: #dc3545;
-            color: white;
-        }
-        .badge-dikirim {
-            background-color: #007bff;
-            color: white;
-        }
-        .badge-sudah-sampai {
-            background-color: #28a745;
-            color: white;
-        }
+        .badge {
+                font-size: 1rem;
+                padding: 10px 15px;
+                border-radius: 50px;
+            }
+
+            .badge-success {
+                background-color: #28a745;
+                color: white;
+            }
+
+            .badge-warning {
+                background-color: #ffc107;
+                color: black;
+            }
+
+            .badge-danger {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            .badge-primary {
+                background-color: #007bff;
+                color: white;
+            }
+
+            .badge-secondary {
+                background-color:rgb(9, 143, 32);
+                color: white;
+            }
     </style>
 </head>
 <body>
@@ -123,27 +128,34 @@ if ($email) {
                     <p><strong>Alamat:</strong> <?php echo htmlspecialchars($transaction['address']); ?></p>
                     <p><strong>Nomor Telepon:</strong> <?php echo htmlspecialchars($transaction['phone']); ?></p>
                     <p><strong>Status:</strong> 
-                        <span class="badge-status <?php 
-                            if (strcasecmp($transaction['status'], 'Dikonfirmasi') === 0) echo 'badge-dikonfirmasi';
-                            elseif (strcasecmp($transaction['status'], 'Tertunda') === 0) echo 'badge-tertunda';
-                            elseif (strcasecmp($transaction['status'], 'Dibatalkan') === 0) echo 'badge-gagal';
-                            else echo 'badge-tertunda';
+                        <span class="badge <?php 
+                            if (strcasecmp($transaction['status'], 'Dikonfirmasi') === 0) echo 'badge-success';
+                            elseif (strcasecmp($transaction['status'], 'Tertunda') === 0) echo 'badge-warning';
+                            elseif (strcasecmp($transaction['status'], 'Dibatalkan') === 0) echo 'badge-danger';
+                            else echo 'badge-secondary';
                         ?>">
                             <?php echo htmlspecialchars($transaction['status']); ?>
                         </span>
                     </p>
                     <p><strong>Status Pengiriman:</strong> 
-                        <span class="badge-status <?php 
-                            if (strcasecmp($transaction['shipping_status'], 'Dikirim') === 0) echo 'badge-dikirim';
-                            elseif (strcasecmp($transaction['shipping_status'], 'Sudah Sampai') === 0) echo 'badge-sudah-sampai';
-                            elseif (strcasecmp($transaction['shipping_status'], 'Tertunda') === 0) echo 'badge-tertunda';
-                            elseif (strcasecmp($transaction['shipping_status'], 'Dibatalkan') === 0) echo 'badge-gagal';
-                            else echo 'badge-tertunda';
+                        <span class="badge <?php 
+                            if (strcasecmp($transaction['shipping_status'], 'Dikirim') === 0) echo 'badge-primary';
+                            elseif (strcasecmp($transaction['shipping_status'], 'Sudah Sampai') === 0) echo 'badge-success';
+                            elseif (strcasecmp($transaction['shipping_status'], 'Tertunda') === 0) echo 'badge-warning';
+                            elseif (strcasecmp($transaction['shipping_status'], 'Dibatalkan') === 0) echo 'badge-danger';
+                            else echo 'badge-secondary';
                         ?>">
                             <?php echo htmlspecialchars($transaction['shipping_status']); ?>
                         </span>
                     </p>
                     <p><strong>Total Harga:</strong> Rp <?php echo number_format($transaction['total_price'], 0, ',', '.'); ?></p>
+                    <p><strong>Hubungi Owner:</strong> 
+                        <a href="https://api.whatsapp.com/send?phone=6285261093463&text=Hai%2C%20saya%20mau%20bertanya%20tentang%20transaksi%20dengan%20ID%20<?php echo urlencode($transaction['id']); ?>." 
+                        class="btn btn-success" 
+                        target="_blank">
+                            <i class="bi bi-whatsapp"></i> Chat via WhatsApp
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>

@@ -62,7 +62,100 @@ $topProducts = getTopSellingProducts($db);
         position: relative;
         z-index: 2;
     }
+
+    .offcanvas-backdrop {
+        background-color: rgba(0, 0, 0, 0.1) !important; /* Kurangi efek hitam */
+    }
+
+    .offcanvas {
+        background-color: #f9f9f9; /* Sesuaikan dengan warna latar belakang yang diinginkan */
+        border-radius: 10px;
+    }
 </style>
+
+<!-- Bagian Keranjang -->
+
+<!-- Offcanvas Cart Section -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+    <div class="offcanvas-header justify-content-between">
+        <h5 class="offcanvas-title text-primary" id="offcanvasCartLabel" style="font-size: 1.25rem; font-weight: bold;">Keranjang Anda</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" style="background-color: #f9f9f9; border-radius: 10px;">
+        <!-- Header Keranjang -->
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-primary" style="font-size: 1.1rem;">Keranjang Anda</span>
+                <span class="badge bg-primary rounded-pill" style="font-size: 1.1rem;" id="cartCount">
+                    <?php 
+                    // Menampilkan jumlah produk dalam keranjang
+                    $total_items = 0;
+                    if (isset($_SESSION['cart'][$_SESSION['user_id']])) {
+                        foreach ($_SESSION['cart'][$_SESSION['user_id']] as $item) {
+                            $total_items += $item['quantity'];
+                        }
+                    }
+                    echo $total_items;
+                    ?>
+                </span>
+</h4>
+
+
+<ul class="list-group mb-3" style="list-style-type: none; padding-left: 0;">
+    <?php 
+    $user_id = $_SESSION['user_id'];  // Mengambil user_id dari session
+    $cart_query = "SELECT c.quantity, p.id as product_id, p.name, p.price, p.image
+        FROM cart c
+        JOIN products p ON c.product_id = p.id
+        WHERE c.user_id = ?";
+    $stmt = $db->prepare($cart_query);
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $cart_items = [];
+    $total_price = 0;
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $total_price += $row['price'] * $row['quantity'];
+            echo "<li class='list-group-item d-flex justify-content-between align-items-center lh-sm' style='border-radius: 10px; margin-bottom: 10px; background-color: #ffffff; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);'>
+                    <div class='d-flex align-items-center'>
+                        <img src='./admin/uploads/" . htmlspecialchars($row['image']) . "' alt='" . htmlspecialchars($row['name']) . "' class='img-thumbnail' style='width: 60px; height: 60px; margin-right: 10px;'>
+                        <div>
+                            <h6 class='my-0' style='font-size: 1.1rem; font-weight: 500;'>" . htmlspecialchars($row['name']) . "</h6>
+                            <small class='text-muted'>Kuantitas: </small>
+                            <div class='d-flex align-items-center'>
+                                <button type='button' class='btn btn-light btn-sm decrease-quantity' data-product-id='" . $row['product_id'] . "' style='font-size: 1.2rem; border-radius: 5px;'><i class='bi bi-dash-circle'></i></button>
+                                <input type='number' class='form-control d-inline text-center quantity-input' data-product-id='" . $row['product_id'] . "' value='" . $row['quantity'] . "' min='1' style='width: 50px; height: 30px; margin: 0 5px;' required>
+                                <button type='button' class='btn btn-light btn-sm increase-quantity' data-product-id='" . $row['product_id'] . "' style='font-size: 1.2rem; border-radius: 5px;'><i class='bi bi-plus-circle'></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <span class='text-muted' style='font-size: 1.1rem;'>Rp " . number_format($row['price'] * $row['quantity'], 0, ',', '.') . "</span>
+                    <button type='button' class='btn btn-danger btn-sm removeFromCart' data-id='" . $row['product_id'] . "' style='font-size: 0.9rem; border-radius: 5px;'><i class='bi bi-trash'></i></button>
+                </li>";
+        }
+    } else {
+        echo "<li class='list-group-item' style='font-size: 1.1rem; color: #6c757d;'>Keranjang Anda kosong.</li>";
+    }
+    ?>
+</ul>
+
+
+
+        <!-- Total Price -->
+        <li class="list-group-item d-flex justify-content-between" style="background-color: #f8f9fa; border-radius: 10px; font-weight: 600;">
+            <span>Total (IDR)</span>
+            <strong>Rp <?= isset($total_price) ? number_format($total_price, 0, ',', '.') : '0' ?></strong>
+        </li>
+
+        <!-- Checkout Button -->
+        <a href="index.php?p=checkout" class="w-100 btn btn-primary btn-lg mt-3" style="border-radius: 10px; font-size: 1.1rem;">Lanjutkan ke Pembayaran</a>
+    </div>
+</div>
+
+
+
 <!-- Bagian Konten -->
 <div class="">
 
@@ -246,7 +339,7 @@ $topProducts = getTopSellingProducts($db);
         </div>
     </section>
 
-    <!-- Bagian Testimoni -->
+    <!-- Bagian Testimoni
     <section id="testimonials" class="py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-4">Apa Kata Pelanggan Kami</h2>
@@ -274,6 +367,118 @@ $topProducts = getTopSellingProducts($db);
                 ?>
             </div>
         </div>
-    </section>
+    </section> -->
 </div>
 
+
+<script>
+    $(document).ready(function () {
+    // Menangani form Add to Cart
+    $('#addToCartForm').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: 'process_cart.php',
+            type: 'POST',
+            data: $(this).serialize() + '&action=addToCart',
+            success: function (response) {
+                let result = JSON.parse(response);
+                if (result.status === 'success') {
+                     // Update jumlah produk di keranjang
+                location.reload(); // Refresh page or update the UI
+                updateCartCount();
+
+                // Tampilkan notifikasi berhasil
+                alert(result.message);
+
+                // Menampilkan sidebar offcanvas otomatis
+                var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasSidebar'));
+                offcanvas.show();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function () {
+                alert('Error menambahkan produk ke keranjang.');
+            },
+        });
+    });
+
+    // Fungsi untuk memperbarui jumlah item di keranjang
+})
+
+// Update Cart Quantity
+$('.update-cart-btn').click(function() {
+    var product_id = $(this).data('product-id');
+    var quantity = $(this).siblings('.update-quantity').val();
+
+    $.ajax({
+        url: 'process_cart.php',
+        type: 'POST',
+        data: {
+            action: 'updateQuantity',
+            product_id: product_id,
+            quantity: quantity
+        },
+        success: function(response) {
+            const result = JSON.parse(response);
+            if (result.status === 'success') {
+                // Update the cart count UI element (e.g., the number of items in the cart)
+                $('#cartCount').text(result.cartCount);
+                location.reload(); // Refresh page or update the UI
+                var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasCart'));
+                offcanvas.show(); // Membuka offcanvas secara otomatis
+                // Redirect back to the same product page to reflect changes
+                let urlParams = new URLSearchParams(window.location.search);
+                let productPageUrl = "index.php?p=toko&id=" + urlParams.get('id');
+                window.location.href = productPageUrl; // Refresh/redirect to the same product page
+                var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasCart'));
+                offcanvas.show();
+
+            } else {
+                alert(result.message); // Show error message if any issue occurs
+            }
+        },
+        error: function() {
+            alert('There was an error updating your cart.');
+        }
+    });
+});
+
+$(document).on('click', '.removeFromCart', function () {
+    const productId = $(this).data('id');
+
+    $.ajax({
+        url: 'process_cart.php',
+        type: 'POST',
+        data: { action: 'removeFromCart', product_id: productId }, // Pastikan action dikirim dengan benar
+        success: function (response) {
+            const result = JSON.parse(response);
+            if (result.status === 'success') {
+                updateCartCount();
+
+                // Memuat ulang konten keranjang untuk memperbarui daftar produk yang ada di keranjang
+                $('#cartItems').load('process_cart.php', { action: 'getCartItems' });
+
+                location.reload(); // Refresh page or update the UI
+                var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasCart'));
+                offcanvas.show(); // Membuka offcanvas secara otomatis
+                // Redirect back to the same product page to reflect changes
+                let urlParams = new URLSearchParams(window.location.search);
+                let productPageUrl = "index.php?p=toko&id=" + urlParams.get('id');
+                window.location.href = productPageUrl; // Refresh/redirect to the same product page
+                var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasCart'));
+                offcanvas.show();
+                
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function () {
+            alert('Error menghapus produk.');
+            
+        }
+    });
+});
+
+</script>

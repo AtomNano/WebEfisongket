@@ -74,7 +74,7 @@ ob_start(); // Mulai output buffering
                     </li>
                     <li class="nav-item">
                         <a class="nav-link animated-link <?= (isset($_GET['p']) && $_GET['p'] == 'aboutus') ? 'active' : '' ?>"
-                            href="index.php?p=aboutus">About Us</a>
+                            href="index.php?p=aboutus">Tentang Kami</a>
                     </li>
                 </ul>
             </div>
