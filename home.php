@@ -71,6 +71,8 @@ $topProducts = getTopSellingProducts($db);
         background-color: #f9f9f9; /* Sesuaikan dengan warna latar belakang yang diinginkan */
         border-radius: 10px;
     }
+
+    
 </style>
 
 <!-- Bagian Keranjang -->
@@ -188,8 +190,9 @@ $topProducts = getTopSellingProducts($db);
         </div>
     </section>
 
+    
     <!-- Bagian Best Seller -->
-<div class="container mt-5 mb-5" data-aos="fade-up">
+    <div class="container mt-5 mb-5" data-aos="fade-up">
     <div class="row align-items-center mb-4">
         <div class="col text-center text-md-start">
             <h3 class="fw-bold text-uppercase">Best Sellers Efi Songket</h3>
@@ -199,42 +202,45 @@ $topProducts = getTopSellingProducts($db);
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <?php
-        if (!empty($topProducts)) {
-            foreach ($topProducts as $product) {
-        ?>
-                <div class="col">
-                    <div class="card h-100 shadow-sm border-0">
-                        <!-- Gambar Produk -->
-                        <div class="position-relative">
-                            <img src="admin/uploads/<?= !empty($product['image']) ? $product['image'] : 'default.png' ?>" 
-                                class="img-fluid rounded-top product-image" 
-                                style="height: 100%; object-fit: cover;" 
-                                alt="<?= htmlspecialchars($product['name']) ?>">
-                            <!-- Label Diskon -->
-                            <div class="position-absolute top-0 start-0 m-2">
-                                <span class="badge bg-success">Best Seller</span>
-                            </div>
+    <div class="row g-4">
+        <?php if (!empty($topProducts) && count($topProducts) > 0): ?>
+            <?php foreach ($topProducts as $product): ?>
+                <div class="col-12 col-sm-6 col-md-3 mb-2 d-flex align-items-stretch">
+                    <div class="product-item image-zoom-effect link-effect bg-white rounded shadow-sm w-100 border border-secondary-subtle border-1">
+                        <div class="image-holder position-relative">
+                            <!-- Link ke halaman detail produk -->
+                            <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="stretched-link">
+                                <img src="admin/uploads/<?= !empty($product['image']) ? $product['image'] : 'default.png' ?>" 
+                                    alt="<?= htmlspecialchars($product['name']) ?>" 
+                                    class="img-fluid product-image" 
+                                    style="object-fit: cover; height: 100%;">
+                            </a>
+                            <!-- Wishlist Button -->
+                            <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="btn-icon btn-wishlist position-absolute top-0 end-0 m-2">
+                                <i class="bi bi-heart"></i>
+                            </a>
                         </div>
-
-                        <!-- Detail Produk -->
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title text-truncate"><?= htmlspecialchars($product['name']) ?></h5>
-                            <p class="card-text text-muted">Rp <?= number_format($product['price'], 0, ',', '.') ?></p>
-                            <a href="index.php?p=toko&id=<?= $product['id'] ?>" 
-                                class="btn btn-primary mt-auto rounded-pill shadow-sm">
-                                Lihat Detail
+                        <div class="product-content p-3 text-center d-flex flex-column">
+                            <!-- Product Name -->
+                            <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="text-decoration-none">
+                                <h5 class="text-uppercase fs-5 mt-3 d-flex align-items-center justify-content-center" 
+                                    style="height: 70px; overflow: hidden;">
+                                    <?= htmlspecialchars($product['name']) ?>
+                                </h5>
+                            </a>
+                            <!-- Product Price -->
+                            <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="text-decoration-none">
+                                <span class="text-primary font-weight-bold">Rp <?= number_format($product['price'], 0, ',', '.') ?></span>
                             </a>
                         </div>
                     </div>
                 </div>
-        <?php
-            }
-        } else {
-            echo "<p class='text-center'>Tidak ada produk best seller ditemukan.</p>";
-        }
-        ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12">
+                <p class="text-center">Tidak ada produk best seller ditemukan.</p>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 <!-- Akhir Best Seller -->
