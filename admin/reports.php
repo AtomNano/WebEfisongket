@@ -369,7 +369,7 @@ new Chart(ctxProductReport, {
         scales: {
             y: {
                 beginAtZero: true,
-                max: 10, // Set maximum value to 10 juta
+                max: 25, // Set maximum value to 10 juta
                 ticks: {
                     stepSize: 1, // Set step size to 1 juta
                     callback: function(value) {
