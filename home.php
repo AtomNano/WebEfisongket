@@ -190,31 +190,46 @@ $topProducts = getTopSellingProducts($db);
 
     <!-- Bagian Best Seller -->
 <div class="container mt-5 mb-5" data-aos="fade-up">
-    <div class="row">
-        <div class="col text-center align-self-center">
-            <h2 class="text-center my-3 mb-6">Best Sellers Efi Songket</h2>
+    <div class="row align-items-center mb-4">
+        <div class="col text-center text-md-start">
+            <h3 class="fw-bold text-uppercase">Best Sellers Efi Songket</h3>
         </div>
-        <div class="col text-end align-self-center">
-            <a href="index.php?p=toko" class="btn-link">Lihat Semua Produk</a>
+        <div class="col text-center text-md-end">
+            <a href="index.php?p=toko" class="btn btn-primary rounded-pill px-4 py-2">Lihat Semua Produk</a>
         </div>
     </div>
 
-    <div class="row g-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <?php
         if (!empty($topProducts)) {
             foreach ($topProducts as $product) {
-                ?>
-                <div class="col-md-3">
-                    <div class="card h-100 rounded" data-aos="fade-up">
-                        <img src="admin/uploads/<?= !empty($product['image']) ? $product['image'] : 'default.png' ?>" class="card-img-top" alt="<?= htmlspecialchars($product['name']) ?>">
+        ?>
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0">
+                        <!-- Gambar Produk -->
+                        <div class="position-relative">
+                            <img src="admin/uploads/<?= !empty($product['image']) ? $product['image'] : 'default.png' ?>" 
+                                class="img-fluid rounded-top product-image" 
+                                style="height: 100%; object-fit: cover;" 
+                                alt="<?= htmlspecialchars($product['name']) ?>">
+                            <!-- Label Diskon -->
+                            <div class="position-absolute top-0 start-0 m-2">
+                                <span class="badge bg-success">Best Seller</span>
+                            </div>
+                        </div>
+
+                        <!-- Detail Produk -->
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title"><?= htmlspecialchars($product['name']) ?></h5>
-                            <p class="card-text flex-grow-1">Rp <?= number_format($product['price'], 0, ',', '.') ?></p>
-                            <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="btn btn-primary mt-auto rounded-pill">Lihat Detail</a>
+                            <h5 class="card-title text-truncate"><?= htmlspecialchars($product['name']) ?></h5>
+                            <p class="card-text text-muted">Rp <?= number_format($product['price'], 0, ',', '.') ?></p>
+                            <a href="index.php?p=toko&id=<?= $product['id'] ?>" 
+                                class="btn btn-primary mt-auto rounded-pill shadow-sm">
+                                Lihat Detail
+                            </a>
                         </div>
                     </div>
                 </div>
-                <?php
+        <?php
             }
         } else {
             echo "<p class='text-center'>Tidak ada produk best seller ditemukan.</p>";
@@ -222,7 +237,8 @@ $topProducts = getTopSellingProducts($db);
         ?>
     </div>
 </div>
-    <!-- Akhir Best Seller -->
+<!-- Akhir Best Seller -->
+
 
     <!-- Akhir Belanja Berdasarkan Kategori -->
 
@@ -302,11 +318,11 @@ $topProducts = getTopSellingProducts($db);
                     if ($relatedProductsResult && mysqli_num_rows($relatedProductsResult) > 0) {
                         while ($product = mysqli_fetch_assoc($relatedProductsResult)) {
                             ?>
-                            <div class="swiper-slide" role="group" aria-label="1 / 4" style="width: 305.333px; margin-right: 10px;">
+                            <div class="swiper-slide" role="group" aria-label="1 / 4" style="width: 100%; margin-right: 10px;">
                                 <div class="product-item image-zoom-effect link-effect">
                                     <div class="image-holder">
                                         <a href="index.php?p=toko&id=<?= $product['id'] ?>">
-                                            <img src="admin/uploads/<?= !empty($product['image']) ? $product['image'] : 'default.png' ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="product-image img-fixed">
+                                            <img src="admin/uploads/<?= !empty($product['image']) ? $product['image'] : 'default.png' ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="product-image img-fixed" style="max-width: 100%; height: 550px; object-fit: cover; object-position: center;">
                                         </a>
                                         <a href="index.php?p=toko&id=<?= $product['id'] ?>" class="btn-icon btn-wishlist">
                                             <i class="bi bi-heart"></i>

@@ -75,6 +75,28 @@ if ($email) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        body {
+        background-image: url('gambarEfi/bg21.webp');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: #333;
+        position: relative;
+    }
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: inherit;
+        background-size: inherit;
+        background-attachment: inherit;
+        background-position: inherit;
+        filter: blur(8px); /* Sesuaikan tingkat blur */
+        z-index: -1;
+    }
         .product-image {
             width: 100px;
             height: 150px;
@@ -195,7 +217,7 @@ if ($email) {
     <!-- Riwayat Transaksi -->
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card mb-4">
                 <div class="card-header">
                     <h2>Riwayat Transaksi</h2>
                 </div>

@@ -1,7 +1,34 @@
 <?php
+
+use Google\Service\AlertCenter\Resource\Alerts;
+
 session_start();
 include 'phpconection.php'; // Menghubungkan ke database
 include 'functions.php'; // Sertakan file functions.php
+
+// Cek apakah user sudah login
+if (!isset($_SESSION['level'])) {
+    // Jika level tidak diset, arahkan ke halaman login
+    header('Location: ../index.php?p=login');
+    echo "<script>alert('Anda Bukan Admin!');</script>";
+    exit;
+}
+
+// Jika user adalah admin
+if ($_SESSION['level'] === 'admin') {
+    // Pastikan hanya dialihkan ke admin/index.php jika belum berada di sana
+    if (basename($_SERVER['PHP_SELF']) !== 'index.php') {
+        header('Location: ../admin/index.php');
+        exit;
+    }
+} else {
+    // Jika user bukan admin, arahkan ke halaman utama
+    if (basename($_SERVER['PHP_SELF']) !== 'index.php') {
+        header('Location: ../index.php');
+        exit;
+    }
+}
+// Jika bukan admin atau session tidak diset, langsung keluar ke halaman utama di luar folder
 
 // Periksa koneksi database
 if (!$db) {
@@ -488,7 +515,7 @@ const monthlyData = <?php echo json_encode($monthlyTransactions); ?>;
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 50, // Set maximum value to 50 juta
+                    max: 10, // Set maximum value to 10 juta
                     ticks: {
                         stepSize: 1, // Set step size to 1 juta
                         callback: function(value) {

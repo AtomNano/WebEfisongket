@@ -26,9 +26,8 @@ $body_class = 'homepage';
                 <h5 class="widget-title text-uppercase mb-4">Tautan Cepat</h5>
                 <ul class="list-unstyled">
                     <li class="mb-2"><a href="index.php" class="text-decoration-none text-dark">Beranda</a></li>
-                    <li class="mb-2"><a href="about.php" class="text-decoration-none text-dark">Tentang Kami</a></li>
-                    <li class="mb-2"><a href="shop.php" class="text-decoration-none text-dark">Produk</a></li>
-                    <li class="mb-2"><a href="contact.php" class="text-decoration-none text-dark">Hubungi Kami</a></li>
+                    <li class="mb-2"><a href="index.php?p=toko" class="text-decoration-none text-dark">Produk</a></li>
+                    <li class="mb-2"><a href="index.php?p=aboutus" class="text-decoration-none text-dark">Tentang Kami</a></li>
                 </ul>
             </div>
 
@@ -37,11 +36,14 @@ $body_class = 'homepage';
                 <h5 class="widget-title text-uppercase mb-4">Hubungi Kami</h5>
                 <p>Email: <a href="mailto:info@efisongket.com" class="text-decoration-none text-dark">info@efisongket.com</a></p>
                 <p>Telepon: <a href="tel:+6285261093463" class="text-decoration-none text-dark">+62 852-6109-3463</a></p>
-                <p>Alamat: <br>
-                    Perum Bunda Persada Blok I No. 2<br>
-                    Kel. Gunuang Sarik, Kec. Kuranji Balai Baru,<br>
-                    Kota Padang, Sumatera Barat, Indonesia 25173.
-                </p>
+                <a href="https://maps.app.goo.gl/hczgQapzW6Lp6R1h7">
+                    <p>Alamat: <br>
+                        Perum Bunda Persada Blok I No. 2<br>
+                        Kel. Gunuang Sarik, Kec. Kuranji Balai Baru,<br>
+                        Kota Padang, Sumatera Barat, Indonesia 25173.
+                    </p>
+
+                </a>
             </div>
         </div>
 
