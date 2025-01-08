@@ -101,6 +101,7 @@ if (!$result) {
                         </td>
                         <td>
                             <!-- Tombol Edit -->
+                            <!-- Edit Button -->
                             <button class="btn btn-warning btn-sm editProductBtn mb-2" 
                                     data-id="<?= $product['id'] ?>" 
                                     data-name="<?= htmlspecialchars($product['name']) ?>" 

@@ -28,7 +28,7 @@ if (isset($_GET['proses'])) {
         exit;
     }
 
-    // Edit Status Transaksi
+    // Edit Transaksi Konfirmasi Pembayaran
     if ($proses == 'edit') {
         $status = 'Dikonfirmasi';  // Status yang akan diubah, misalnya 'Confirmed'
 
