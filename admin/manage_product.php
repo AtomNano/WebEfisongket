@@ -101,7 +101,6 @@ if (!$result) {
                         </td>
                         <td>
                             <!-- Tombol Edit -->
-                            <!-- Edit Button -->
                             <button class="btn btn-warning btn-sm editProductBtn mb-2" 
                                     data-id="<?= $product['id'] ?>" 
                                     data-name="<?= htmlspecialchars($product['name']) ?>" 
@@ -171,6 +170,59 @@ if (!$result) {
             </div>
         </div>
     </div>
+
+
+    <!-- Modal Edit Produk -->
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProductModalLabel">Edit Produk</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm" enctype="multipart/form-data" action="crud_product.php?proses=update" method="POST">
+                    <input type="hidden" id="editProductId" name="id">
+                    <input type="hidden" id="currentImage" name="current_image">
+                    <div class="mb-3">
+                        <label for="editProductName" class="form-label">Nama Produk</label>
+                        <input type="text" class="form-control" id="editProductName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductDescription" class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="editProductDescription" name="description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCategory" class="form-label">Kategori</label>
+                        <select class="form-select" id="editCategory" name="category_id" required>
+                            <?php
+                            $categories = mysqli_query($db, "SELECT * FROM kategori");
+                            while ($category = mysqli_fetch_assoc($categories)) {
+                                echo "<option value='{$category['id_kategori']}'>{$category['nama_kategori']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductPrice" class="form-label">Harga</label>
+                        <input type="number" class="form-control" id="editProductPrice" name="price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductStock" class="form-label">Stok</label>
+                        <input type="number" class="form-control" id="editProductStock" name="stock" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductImage" class="form-label">Gambar Produk</label>
+                        <input type="file" class="form-control" id="editProductImage" name="fileToUpload">
+                        <img id="editProductImagePreview" src="" alt="Gambar Produk" style="width: 100px; height: 100px; object-fit: cover; margin-top: 10px; display: none;">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
